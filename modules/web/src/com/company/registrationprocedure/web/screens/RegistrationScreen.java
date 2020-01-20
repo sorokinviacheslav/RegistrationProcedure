@@ -30,15 +30,7 @@ public class RegistrationScreen extends Screen {
 
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) throws ValidationException {
-        ValidationErrors errors = screenValidation.validateUiComponents(this.getWindow().getComponents());
-        if(!errors.isEmpty()) {
-            for (ValidationErrors.Item er : errors.getAll()) {
-                notifications.create(Notifications.NotificationType.TRAY)
-                        .withCaption(er.description)
-                        .show();
-            }
-            return;
-        }
+        if(!validateAllWithMessages()) return;
         try {
             registrationService.registerUser(getLogin(), getPassword());
 
@@ -63,5 +55,16 @@ public class RegistrationScreen extends Screen {
 
     public String getLogin() {
         return login.getValue();
+    }
+
+    private boolean validateAllWithMessages() {
+        ValidationErrors errors = screenValidation.validateUiComponents(this.getWindow().getComponents());
+        if(errors.isEmpty()) return true;
+        for (ValidationErrors.Item er : errors.getAll()) {
+            notifications.create(Notifications.NotificationType.TRAY)
+                    .withCaption(er.description)
+                    .show();
+        }
+        return false;
     }
 }

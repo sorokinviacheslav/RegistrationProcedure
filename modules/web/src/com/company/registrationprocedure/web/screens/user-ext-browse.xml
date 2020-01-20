@@ -45,7 +45,7 @@
                 <column id="active"/>
                 <column id="changePasswordAtNextLogon"/>
                 <column id="ipMask"/>
-                <column id="activated"/>
+                <column id="status"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

@@ -2,22 +2,42 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://caption"
         messagesPack="com.company.registrationprocedure.web.screens">
+    <data>
+        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization">
+            <loader id="organizationsDl" firstResult="0">
+                <query>
+                    <![CDATA[select e from registrationprocedure_Organization e ]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
     <layout>
         <form>
-            <column childrenCaptionWidth="AUTO" width="300">
+            <column>
                 <textField id="login" required="true" caption="Login">
                 </textField>
-                <passwordField id="passwordField" required="true" caption="Password">
-                    <validators>
-                        <size message="msg://passwordLengthErrorMessage" min="4" max="15"/>
-                    </validators>
-                </passwordField>
+                <passwordField id="passwordField" caption="Password" required="true"/>
+                <passwordField id="passwordConfirmField" caption="Password" required="true"/>
                 <textField id="emailField" required="true"
                            textChangeTimeout="400" caption="Email">
                     <validators>
                         <email message="msg://emailWrongCaption"/>
                     </validators>
                 </textField>
+                <textField id="firstNameField" caption="First Name" required="true"/>
+                <textField id="lastNameField" caption="Last Name" required="true"/>
+                <textField id="middleNameField" caption="Middle Name" required="true"/>
+                <maskedField id="phoneField" caption="Phone Number" valueMode="masked" mask="(###)###-##-##"
+                             required="true"/>
+                <checkBox id="emailNotificationsCheckBox" caption="Email Notifications"/>
+                <checkBox id="hideEmail" caption="Hide Email"/>
+                <pickerField id="organizationPickerField" caption="Organization" required="true"
+                             dataContainer="organizationsDc">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </pickerField>
                 <button id="register" caption="Register"/>
             </column>
         </form>

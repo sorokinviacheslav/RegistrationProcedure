@@ -3,5 +3,6 @@
     <persistence-unit name="RegistrationProcedure" transaction-type="RESOURCE_LOCAL">
 
         <class>com.company.registrationprocedure.entity.UserExt</class>
+        <class>com.company.registrationprocedure.entity.Organization</class>
     </persistence-unit>
 </persistence>

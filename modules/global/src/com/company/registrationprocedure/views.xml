@@ -5,4 +5,7 @@
     <view entity="registrationprocedure_UserExt" name="userExt-view_1" extends="_minimal">
         <property name="password"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_2" extends="_local">
+        <property name="organization" fetch="BATCH" view="_minimal"/>
+    </view>
 </views>

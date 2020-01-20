@@ -42,12 +42,12 @@ public class ActivationScreen extends Screen {
         if(userExtDc.getItemOrNull()==null) {
             label1.setValue("Invalid link! Please contact support.");
         }
-        else if(userExtDc.getItem().getActivated()) {
+        else if(userExtDc.getItem().getConfirmed()) {
             label1.setValue("Your account has been already activated!");
         }
         else {
             label1.setValue("Welcome "+userExtDc.getItem().getLogin()+"!");
-            userExtDc.getItem().setActivated(true);
+            userExtDc.getItem().setConfirmed(true);
             dataContext.commit();
         }
     }

@@ -3,5 +3,6 @@
     <menu id="application-registrationprocedure" insertBefore="administration">
         <item screen="registrationprocedure_UserExt.browse"/>
         <item screen="registrationprocedure_RegistrationScreen"/>
+        <item screen="registrationprocedure_Organization.browse"/>
     </menu>
 </menu-config>
