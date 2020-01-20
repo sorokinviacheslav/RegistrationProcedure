@@ -5,10 +5,7 @@ import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.validation.MethodParametersValidationException;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.screen.Screen;
-import com.haulmont.cuba.gui.screen.Subscribe;
-import com.haulmont.cuba.gui.screen.UiController;
-import com.haulmont.cuba.gui.screen.UiDescriptor;
+import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 
@@ -28,28 +25,21 @@ public class RegistrationScreen extends Screen {
     private Notifications notifications;
     @Inject
     private Messages messages;
+    @Inject
+    private ScreenValidation screenValidation;
 
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) throws ValidationException {
-        /*if(!this.getWindow().validateAll()) {
-            this.getWindow().showNotification("Invalid field input", Frame.NotificationType.TRAY);
+        ValidationErrors errors = screenValidation.validateUiComponents(this.getWindow().getComponents());
+        if(!errors.isEmpty()) {
+            for (ValidationErrors.Item er : errors.getAll()) {
+                notifications.create(Notifications.NotificationType.TRAY)
+                        .withCaption(er.description)
+                        .show();
+            }
             return;
-        }*/
-        try {
-            passwordField.validate();
-        } catch (ValidationException e) {
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption("Error password")
-                    .show();
         }
         try {
-            emailField.validate();
-        } catch (ValidationException e) {
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption("Error email")
-                    .show();
-        }
-    /*try {
             registrationService.registerUser(getLogin(), getPassword());
 
             notifications.create(Notifications.NotificationType.TRAY)
@@ -64,7 +54,7 @@ public class RegistrationScreen extends Screen {
                                     "com.company.sample.validation",
                                     "UserExistsValidator.message"))
                     .show();
-        }*/
+        }
     }
 
     public String getPassword() {

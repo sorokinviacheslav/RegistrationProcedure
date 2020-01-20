@@ -3,14 +3,23 @@
         caption="msg://caption"
         messagesPack="com.company.registrationprocedure.web.screens">
     <layout>
-        <textField id="login" align="TOP_CENTER" required="true"/>
-        <passwordField id="passwordField" align="TOP_CENTER" required="true"/>
-        <textField id="emailField" align="TOP_CENTER" required="true"
-                   textChangeTimeout="400">
-            <validators>
-                <email message="msg://emailWrongCaption"/>
-            </validators>
-        </textField>
-        <button id="register" align="TOP_CENTER" caption="Register"/>
+        <form>
+            <column childrenCaptionWidth="AUTO" width="300">
+                <textField id="login" required="true" caption="Login">
+                </textField>
+                <passwordField id="passwordField" required="true" caption="Password">
+                    <validators>
+                        <size message="msg://passwordLengthErrorMessage" min="4" max="15"/>
+                    </validators>
+                </passwordField>
+                <textField id="emailField" required="true"
+                           textChangeTimeout="400" caption="Email">
+                    <validators>
+                        <email message="msg://emailWrongCaption"/>
+                    </validators>
+                </textField>
+                <button id="register" caption="Register"/>
+            </column>
+        </form>
     </layout>
 </window>

@@ -4,9 +4,5 @@
     <view entity="registrationprocedure_UserExt" name="userExt-view" extends="_local"/>
     <view entity="registrationprocedure_UserExt" name="userExt-view_1" extends="_minimal">
         <property name="password"/>
-        <property name="firstName"/>
-        <property name="lastName"/>
-        <property name="middleName"/>
-        <property name="email"/>
     </view>
 </views>

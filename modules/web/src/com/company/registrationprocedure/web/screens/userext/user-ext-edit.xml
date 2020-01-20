@@ -10,17 +10,17 @@
             <loader/>
         </instance>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
     <layout expand="editActions" spacing="true">
         <form id="form" dataContainer="userExtDc">
             <column width="250px">
                 <textField id="loginField" property="login"/>
                 <textField id="nameField" property="name"/>
-                <textField id="firstNameField" property="firstName"/>
-                <textField id="lastNameField" property="lastName"/>
-                <textField id="middleNameField" property="middleName"/>
-                <textField id="emailField" property="email"/>
+                <passwordField id="passwordField" caption="Password" dataContainer="userExtDc" property="password"
+                               maxLength="0" tabIndex="0"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

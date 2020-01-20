@@ -2,18 +2,13 @@ package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.service.RegistrationService;
-import com.haulmont.cuba.core.app.EmailService;
+import com.company.registrationprocedure.web.screens.userext.UserExtEdit;
 import com.haulmont.cuba.core.global.*;
-import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.UrlRouting;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.CssLayout;
-import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.web.app.login.LoginScreen;
-import com.haulmont.cuba.web.gui.components.WebPasswordField;
-
 import javax.inject.Inject;
 
 
@@ -24,20 +19,16 @@ public class ExtLoginScreen extends LoginScreen {
     @Inject
     private Button loginButton;
     @Inject
-    private CssLayout loginCredentials;
-    @Inject
-    private RegistrationService registrationService;
-    @Inject
-    private ScreenBuilders screenBuilders;
-    @Inject
     private Metadata metadata;
 
     @Subscribe("testButton")
     public void onTestButtonClick(Button.ClickEvent event) {
-        screenBuilders.editor(UserExt.class, this)
-                .withOpenMode(OpenMode.DIALOG)
-                .editEntity(metadata.create(UserExt.class))
-                .build();
+        /*screenBuilders.editor(User.class, this)
+                .editEntity(metadata.create(User.class))
+                .build();*/
+        UserExtEdit screen = screens.create(UserExtEdit.class);
+        screen.setEntityToEdit(metadata.create(UserExt.class));
+        screens.show(screen);
     }
 
     @Subscribe("registerButton")
