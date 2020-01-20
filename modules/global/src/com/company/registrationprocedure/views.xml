@@ -8,4 +8,7 @@
     <view entity="registrationprocedure_UserExt" name="userExt-view_2" extends="_local">
         <property name="organization" fetch="BATCH" view="_minimal"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_3" extends="_local">
+        <property name="organization" view="_minimal"/>
+    </view>
 </views>

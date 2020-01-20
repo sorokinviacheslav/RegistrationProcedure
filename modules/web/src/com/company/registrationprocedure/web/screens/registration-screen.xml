@@ -3,8 +3,8 @@
         caption="msg://caption"
         messagesPack="com.company.registrationprocedure.web.screens">
     <data>
-        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization">
-            <loader id="organizationsDl" firstResult="0">
+        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization" view="_local">
+            <loader id="" firstResult="0" maxResults="0">
                 <query>
                     <![CDATA[select e from registrationprocedure_Organization e ]]>
                 </query>
@@ -17,7 +17,7 @@
                 <textField id="login" required="true" caption="Login">
                 </textField>
                 <passwordField id="passwordField" caption="Password" required="true"/>
-                <passwordField id="passwordConfirmField" caption="Password" required="true"/>
+                <passwordField id="passwordConfirmField" caption="Repeat Password" required="true"/>
                 <textField id="emailField" required="true"
                            textChangeTimeout="400" caption="Email">
                     <validators>
@@ -32,7 +32,7 @@
                 <checkBox id="emailNotificationsCheckBox" caption="Email Notifications"/>
                 <checkBox id="hideEmail" caption="Hide Email"/>
                 <pickerField id="organizationPickerField" caption="Organization" required="true"
-                             dataContainer="organizationsDc">
+                             property="name" metaClass="registrationprocedure_Organization">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="clear" type="picker_clear"/>
