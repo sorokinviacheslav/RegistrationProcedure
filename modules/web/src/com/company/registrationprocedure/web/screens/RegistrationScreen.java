@@ -39,7 +39,7 @@ public class RegistrationScreen extends Screen {
             passwordField.validate();
         } catch (ValidationException e) {
             notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption("Error password1")
+                    .withCaption("Error password")
                     .show();
         }
         try {
