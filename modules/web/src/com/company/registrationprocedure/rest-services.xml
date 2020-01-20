@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://schemas.haulmont.com/cuba/rest-services-v2.xsd">
+    <service name="registrationprocedure_UserConfirmationRestService">
+        <method name="confirmRegistration" anonymousAllowed="true">
+            <param name="username"/>
+        </method>
+    </service>
+</services>
+

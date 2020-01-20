@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://caption"
+        messagesPack="com.company.registrationprocedure.web.screens">
+    <layout>
+        <textField id="login" align="TOP_CENTER" required="true"/>
+        <passwordField id="passwordField" align="TOP_CENTER" required="true"/>
+        <textField id="emailField" align="TOP_CENTER" required="true"
+                   textChangeTimeout="400">
+            <validators>
+                <email message="msg://emailWrongCaption"/>
+            </validators>
+        </textField>
+        <button id="register" align="TOP_CENTER" caption="Register"/>
+    </layout>
+</window>

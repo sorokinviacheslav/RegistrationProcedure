@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://caption"
+        messagesPack="com.company.registrationprocedure.web.screens">
+    <data>
+        <instance id="userExtDc" class="com.company.registrationprocedure.entity.UserExt">
+            <loader id="userExtDl"/>
+        </instance>
+    </data>
+    <layout expand="label1">
+        <label id="label1" description="User is successfully verified! Welcome!" align="TOP_CENTER"/>
+        <button id="backToLogin" caption="Back to Log In" align="TOP_CENTER"/>
+    </layout>
+</window>

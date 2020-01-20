@@ -1,0 +1,1 @@
+drop table REGISTRATIONPROCEDURE_VERIFICATION_TOKEN__U32880 if exists cascade ;

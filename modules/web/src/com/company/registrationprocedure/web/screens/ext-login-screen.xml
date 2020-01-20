@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        messagesPack="com.company.registrationprocedure.web.screens"
+        extends="/com/haulmont/cuba/web/app/login/login-screen.xml">
+    <layout>
+        <vbox id="loginWrapper">
+            <vbox id="loginMainBox">
+                <vbox id="loginForm">
+                    <button id="registerButton" align="TOP_CENTER" caption="Register"/>
+                    <button id="testButton" align="TOP_CENTER" caption="Test"/>
+                </vbox>
+            </vbox>
+        </vbox>
+    </layout>
+</window>
