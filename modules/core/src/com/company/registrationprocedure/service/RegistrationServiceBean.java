@@ -1,12 +1,16 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.UserExt;
+import com.haulmont.cuba.core.EntityManager;
+import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.app.EmailService;
+import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.Role;
 import com.haulmont.cuba.security.entity.UserRole;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -26,20 +30,21 @@ public class RegistrationServiceBean implements RegistrationService {
     private static final String DEFAULT_ROLE_ID = "3ec31528-dc0e-c341-7727-7b46771ae9ff";
 
     @Inject
-    private DataManager dataManager;
-
-    @Inject
     private Metadata metadata;
     @Inject
     private PasswordEncryption passwordEncryption;
     @Inject
     private EmailService emailService;
+    @Inject
+    private Persistence persistence;
 
     @Override
+    @Transactional
     public RegistrationResult registerUser(String login, String password) {
+        EntityManager em = persistence.getEntityManager();
         // Load group and role to be assigned to the new user
-        Group group = dataManager.load(LoadContext.create(Group.class).setId(UUID.fromString(COMPANY_GROUP_ID)));
-        Role role = dataManager.load(LoadContext.create(Role.class).setId(UUID.fromString(DEFAULT_ROLE_ID)));
+        Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
+        Role role =em.find(Role.class,UUID.fromString(DEFAULT_ROLE_ID));
 
         // Create a user instance
         UserExt user = metadata.create(UserExt.class);
@@ -59,8 +64,8 @@ public class RegistrationServiceBean implements RegistrationService {
         userRole.setRole(role);
 
         // Save new entities
-        dataManager.commit(new CommitContext(user, userRole));
-
+        em.persist(user);
+        em.persist(userRole);
         EmailInfo emailInfo = new EmailInfo(
                 "sorokinvv63rus@gmail.com", // recipients
                 "Activate your account",
