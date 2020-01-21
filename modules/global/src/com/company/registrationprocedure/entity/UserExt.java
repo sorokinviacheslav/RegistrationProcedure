@@ -3,12 +3,14 @@ package com.company.registrationprocedure.entity;
 import com.haulmont.cuba.core.entity.annotation.Extends;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
 import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.security.entity.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@PublishEntityChangedEvents
 @Extends(User.class)
 @Entity(name = "registrationprocedure_UserExt")
 public class UserExt extends User {
@@ -16,10 +18,6 @@ public class UserExt extends User {
 
     @Column(name = "DOMAIN_LOGIN")
     protected String domainLogin;
-
-    @NotNull
-    @Column(name = "CONFIRMED", nullable = false)
-    protected Boolean confirmed = false;
 
     @NotNull
     @Column(name = "STATUS", nullable = false)
@@ -101,12 +99,21 @@ public class UserExt extends User {
         this.domainLogin = domainLogin;
     }
 
-    public Boolean getConfirmed() {
-        return confirmed;
+    @PreUpdate
+    @PrePersist
+    public void assignRole() {
+        if(getStatus().equals(UserStatus.NEW)||getStatus().equals(UserStatus.DEACTIVATED)) {
+            setActive(false);
+        }
+        else if(!getStatus().equals(UserStatus.ACTIVATED)) {
+            //TO DO
+            //Assign restricted role with permission to see user screen only
+            setActive(true);
+        }
+        else {
+            //TO DO
+            //Assign roles according to UserRole value
+            setActive(true);
+        }
     }
-
-    public void setConfirmed(Boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
 }
