@@ -5,7 +5,7 @@ import com.haulmont.chile.core.datatypes.impl.EnumClass;
 import javax.annotation.Nullable;
 
 
-public enum UserRole implements EnumClass<Integer> {
+public enum UserSystemRole implements EnumClass<Integer> {
 
     ADMINISTRATOR(10),
     ACCESS_ADMINISTRATOR(20),
@@ -18,7 +18,7 @@ public enum UserRole implements EnumClass<Integer> {
 
     private Integer id;
 
-    UserRole(Integer value) {
+    UserSystemRole(Integer value) {
         this.id = value;
     }
 
@@ -27,8 +27,8 @@ public enum UserRole implements EnumClass<Integer> {
     }
 
     @Nullable
-    public static UserRole fromId(Integer id) {
-        for (UserRole at : UserRole.values()) {
+    public static UserSystemRole fromId(Integer id) {
+        for (UserSystemRole at : UserSystemRole.values()) {
             if (at.getId().equals(id)) {
                 return at;
             }

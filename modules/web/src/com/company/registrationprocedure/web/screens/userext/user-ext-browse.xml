@@ -47,7 +47,6 @@
                 <column id="group"/>
                 <column id="ipMask"/>
                 <column id="domainLogin"/>
-                <column id="confirmed"/>
                 <column id="status"/>
                 <column id="phoneNumber"/>
                 <column id="recieveEmailNotifications"/>

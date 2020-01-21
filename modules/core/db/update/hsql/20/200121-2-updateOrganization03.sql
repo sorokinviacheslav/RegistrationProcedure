@@ -1,0 +1,3 @@
+alter table REGISTRATIONPROCEDURE_ORGANIZATION add column ROLE integer ^
+update REGISTRATIONPROCEDURE_ORGANIZATION set ROLE = 10 where ROLE is null ;
+alter table REGISTRATIONPROCEDURE_ORGANIZATION alter column ROLE set not null ;

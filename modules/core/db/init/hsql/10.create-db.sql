@@ -1,11 +1,11 @@
 -- begin SEC_USER
 alter table SEC_USER add column DOMAIN_LOGIN varchar(255) ^
-alter table SEC_USER add column CONFIRMED boolean ^
-update SEC_USER set CONFIRMED = false where CONFIRMED is null ^
-alter table SEC_USER alter column CONFIRMED set not null ^
-alter table SEC_USER add column ACTIVATED boolean ^
-update SEC_USER set ACTIVATED = false where ACTIVATED is null ^
-alter table SEC_USER alter column ACTIVATED set not null ^
+alter table SEC_USER add column ROLE integer ^
+update SEC_USER set ROLE = 10 where ROLE is null ^
+alter table SEC_USER alter column ROLE set not null ^
+alter table SEC_USER add column STATUS integer ^
+update SEC_USER set STATUS = 10 where STATUS is null ^
+alter table SEC_USER alter column STATUS set not null ^
 alter table SEC_USER add column PHONE_NUMBER varchar(255) ^
 alter table SEC_USER add column RECIEVE_EMAIL_NOTIFICATIONS boolean ^
 update SEC_USER set RECIEVE_EMAIL_NOTIFICATIONS = false where RECIEVE_EMAIL_NOTIFICATIONS is null ^
@@ -29,6 +29,7 @@ create table REGISTRATIONPROCEDURE_ORGANIZATION (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    ROLE integer not null,
     NAME varchar(255) not null,
     INN varchar(20) not null,
     --

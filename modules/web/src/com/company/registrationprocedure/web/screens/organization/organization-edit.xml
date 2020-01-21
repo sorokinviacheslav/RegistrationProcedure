@@ -15,6 +15,7 @@
     <layout expand="editActions" spacing="true">
         <form id="form" dataContainer="organizationDc">
             <column width="250px">
+                <lookupField id="roleField" property="role"/>
                 <textField id="nameField" property="name"/>
                 <textField id="innField" property="inn"/>
             </column>

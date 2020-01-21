@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.entity.UserStatus;
 import com.haulmont.cuba.core.global.DataManager;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class UserConfirmationRestServiceBean implements UserConfirmationRestServ
                 .list();
 
         if (users!=null&&users.size()>0) {
-            users.get(0).setConfirmed(true);
+            users.get(0).setStatus(UserStatus.EMAIL_CONFIRMED);
             dataManager.commit(users.get(0));
             return true;
         }

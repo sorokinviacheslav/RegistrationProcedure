@@ -16,4 +16,12 @@
         <property name="group" view="_minimal"/>
         <property name="userRoles" view="_minimal"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_5" extends="_minimal">
+        <property name="phoneNumber"/>
+        <property name="recieveEmailNotifications"/>
+        <property name="hideEmail"/>
+        <property name="firstName"/>
+        <property name="lastName"/>
+        <property name="middleName"/>
+    </view>
 </views>

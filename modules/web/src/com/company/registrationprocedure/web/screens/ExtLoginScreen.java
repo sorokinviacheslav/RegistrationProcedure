@@ -2,7 +2,6 @@ package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.service.RegistrationService;
-import com.company.registrationprocedure.web.screens.userext.UserExtEdit;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Button;
@@ -23,12 +22,7 @@ public class ExtLoginScreen extends LoginScreen {
 
     @Subscribe("testButton")
     public void onTestButtonClick(Button.ClickEvent event) {
-        /*screenBuilders.editor(User.class, this)
-                .editEntity(metadata.create(User.class))
-                .build();*/
-        UserExtEdit screen = screens.create(UserExtEdit.class);
-        screen.setEntityToEdit(metadata.create(UserExt.class));
-        screens.show(screen);
+
     }
 
     @Subscribe("registerButton")

@@ -20,6 +20,10 @@ public class UserExt extends User {
     protected String domainLogin;
 
     @NotNull
+    @Column(name = "ROLE", nullable = false)
+    protected Integer role;
+
+    @NotNull
     @Column(name = "STATUS", nullable = false)
     protected Integer status;
 
@@ -42,6 +46,14 @@ public class UserExt extends User {
 
     @Column(name = "COMMENTS", length = 1000)
     protected String comments;
+
+    public UserSystemRole getRole() {
+        return role == null ? null : UserSystemRole.fromId(role);
+    }
+
+    public void setRole(UserSystemRole role) {
+        this.role = role == null ? null : role.getId();
+    }
 
     public void setStatus(UserStatus status) {
         this.status = status == null ? null : status.getId();
@@ -99,21 +111,5 @@ public class UserExt extends User {
         this.domainLogin = domainLogin;
     }
 
-    @PreUpdate
-    @PrePersist
-    public void assignRole() {
-        if(getStatus().equals(UserStatus.NEW)||getStatus().equals(UserStatus.DEACTIVATED)) {
-            setActive(false);
-        }
-        else if(!getStatus().equals(UserStatus.ACTIVATED)) {
-            //TO DO
-            //Assign restricted role with permission to see user screen only
-            setActive(true);
-        }
-        else {
-            //TO DO
-            //Assign roles according to UserRole value
-            setActive(true);
-        }
-    }
+
 }
