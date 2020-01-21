@@ -3,8 +3,9 @@
         xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd"
         extends="com/company/registrationprocedure/web/screens/abstract-user-view-screen.xml">
     <data>
-        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization">
-            <loader id="organizationsDl">
+        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization"
+                    view="organization-view">
+            <loader id="organizationsDl" dynamicAttributes="true" firstResult="1" maxResults="20">
                 <query>
                     <![CDATA[select e from registrationprocedure_Organization e]]>
                 </query>
@@ -23,9 +24,8 @@
                         <action id="clear" type="picker_clear"/>
                     </actions>
                 </pickerField>
-                <lookupPickerField id="organizationLookupPickerField" caption="Organization"
-                                   dataContainer="organizationsDc" metaClass="registrationprocedure_Organization"
-                                   property="name">
+                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
+                                   captionProperty="name" required="true" filterMode="NO">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="open" type="picker_open"/>

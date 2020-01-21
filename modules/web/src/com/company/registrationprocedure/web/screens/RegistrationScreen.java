@@ -3,12 +3,15 @@ package com.company.registrationprocedure.web.screens;
 import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.service.RegistrationService;
 import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
 
 import javax.inject.Inject;
+import java.util.function.BiFunction;
 
 @UiController("registrationprocedure_RegistrationScreen")
 @UiDescriptor("registration-screen.xml")
@@ -42,6 +45,22 @@ public class RegistrationScreen extends AbstractUserViewScreen {
     private TextField<String> firstNameField;
     @Inject
     private CheckBox emailNotificationsCheckBox;
+    @Inject
+    private LookupPickerField<Organization> organizationLookupPickerField;
+
+    @Inject
+    private CollectionContainer<Organization> organizationsDc;
+    @Inject
+    private Metadata metadata;
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        organizationLookupPickerField.setOptionsList(organizationsDc.getItems());
+        organizationLookupPickerField.setMetaClass(metadata.getClass("registrationprocedure_Organization"));
+        BiFunction<String, String, Boolean> predicate = String::contains;
+        organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
+                predicate.apply(itemCaption.toLowerCase(), searchString));
+    }
 
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) {

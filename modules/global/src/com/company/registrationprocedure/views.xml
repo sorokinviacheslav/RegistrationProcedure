@@ -37,4 +37,5 @@
         <property name="middleName"/>
         <property name="email"/>
     </view>
+    <view entity="registrationprocedure_Organization" name="organization-view" extends="_minimal"/>
 </views>
