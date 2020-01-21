@@ -27,7 +27,7 @@
                 <textField id="firstNameField" caption="First Name" required="true"/>
                 <textField id="lastNameField" caption="Last Name" required="true"/>
                 <textField id="middleNameField" caption="Middle Name" required="true"/>
-                <maskedField id="phoneField" caption="Phone Number" valueMode="masked" mask="(###)###-##-##"
+                <maskedField id="phoneField" caption="Phone Number" valueMode="masked" mask="+7(###)###-##-##"
                              required="true"/>
                 <checkBox id="emailNotificationsCheckBox" caption="Email Notifications"/>
                 <checkBox id="hideEmail" caption="Hide Email"/>

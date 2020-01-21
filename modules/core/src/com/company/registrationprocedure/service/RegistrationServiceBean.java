@@ -40,7 +40,7 @@ public class RegistrationServiceBean implements RegistrationService {
 
     @Override
     @Transactional
-    public RegistrationResult registerUser(String login, String password) {
+    public RegistrationResult registerUser(RegistrationData regData) {
         EntityManager em = persistence.getEntityManager();
         // Load group and role to be assigned to the new user
         Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
@@ -48,8 +48,8 @@ public class RegistrationServiceBean implements RegistrationService {
 
         // Create a user instance
         UserExt user = metadata.create(UserExt.class);
-        user.setLogin(login);
-        user.setPassword(passwordEncryption.getPasswordHash(user.getId(), password));
+        user.setLogin(regData.getLogin());
+        user.setPassword(passwordEncryption.getPasswordHash(user.getId(), regData.getPassword()));
 
         // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
         user.setGroup(group);

@@ -1,5 +1,6 @@
 package com.company.registrationprocedure.web.screens;
 
+import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.service.RegistrationService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.validation.MethodParametersValidationException;
@@ -16,9 +17,25 @@ public class RegistrationScreen extends Screen {
     @Inject
     private PasswordField passwordField;
     @Inject
+    private MaskedField<String> phoneField;
+    @Inject
+    private PasswordField passwordConfirmField;
+    @Inject
     private TextField<String> login;
     @Inject
     private TextField<String> emailField;
+    @Inject
+    private PickerField<Organization> organizationPickerField;
+    @Inject
+    private TextField<String> middleNameField;
+    @Inject
+    private TextField<String> lastNameField;
+    @Inject
+    private CheckBox hideEmail;
+    @Inject
+    private TextField<String> firstNameField;
+    @Inject
+    private CheckBox emailNotificationsCheckBox;
     @Inject
     private RegistrationService registrationService;
     @Inject
@@ -31,8 +48,22 @@ public class RegistrationScreen extends Screen {
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) throws ValidationException {
         if(!validateAllWithMessages()) return;
+        if(!passwordField.getValue().equals(passwordConfirmField.getValue())) {
+            notifications.create(Notifications.NotificationType.TRAY)
+                    .withCaption("Passwords don't match!")
+                    .show();
+            return;
+        }
         try {
-            registrationService.registerUser(getLogin(), getPassword());
+            RegistrationService.RegistrationData regData = new RegistrationService.RegistrationData(login.getValue(),passwordField.getValue(),emailField.getValue(),false);
+            regData.setFirstName(firstNameField.getValue());
+            regData.setLastName(lastNameField.getValue());
+            regData.setMiddleName(middleNameField.getValue());
+            regData.setPhoneNumber(phoneField.getValue());
+            regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
+            regData.setHideEmail(hideEmail.getValue());
+            regData.setOrganization(organizationPickerField.getValue());
+            registrationService.registerUser(regData);
 
             notifications.create(Notifications.NotificationType.TRAY)
                     .withCaption("Created user " + getLogin())
