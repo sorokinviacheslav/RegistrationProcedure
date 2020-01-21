@@ -24,4 +24,17 @@
         <property name="lastName"/>
         <property name="middleName"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_6" extends="_minimal">
+        <property name="role"/>
+        <property name="status"/>
+        <property name="phoneNumber"/>
+        <property name="recieveEmailNotifications"/>
+        <property name="hideEmail"/>
+        <property name="organization" view="_minimal"/>
+        <property name="comments"/>
+        <property name="firstName"/>
+        <property name="lastName"/>
+        <property name="middleName"/>
+        <property name="email"/>
+    </view>
 </views>
