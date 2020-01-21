@@ -11,18 +11,30 @@ public interface RegistrationService {
 
     RegistrationResult registerUser(RegistrationData regData);
 
+    boolean userExists(String login,String email);
+
     class RegistrationResult implements Serializable {
 
         private UUID userId;
+        private boolean success;
 
         public RegistrationResult(User user) {
             if (user != null) {
                 this.userId = user.getId();
+                this.success = true;
+            }
+            else {
+                this.userId =UUID.fromString("0");
+                this.success = false;
             }
         }
 
         public UUID getUserId() {
             return userId;
+        }
+
+        public boolean isSuccess() {
+            return success;
         }
     }
 
@@ -38,7 +50,7 @@ public interface RegistrationService {
         private boolean emailNotifications;
         private boolean hideEmail;
         private String password;
-        private Organization organization;
+        private UUID organizationUUID;
 
         public RegistrationData(String login,String password, String email,Boolean isInternal) {
             this.password=password;
@@ -123,16 +135,16 @@ public interface RegistrationService {
             return password;
         }
 
-        public Organization getOrganization() {
-            return organization;
-        }
-
-        public void setOrganization(Organization organization) {
-            this.organization = organization;
-        }
-
         public String getLogin() {
             return login;
+        }
+
+        public UUID getOrganizationUUID() {
+            return organizationUUID;
+        }
+
+        public void setOrganizationUUID(UUID organizationUUID) {
+            this.organizationUUID = organizationUUID;
         }
     }
 }

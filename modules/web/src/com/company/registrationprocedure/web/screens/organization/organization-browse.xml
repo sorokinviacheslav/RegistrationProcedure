@@ -33,6 +33,7 @@
             </actions>
             <columns>
                 <column id="name"/>
+                <column id="inn"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

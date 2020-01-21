@@ -22,8 +22,8 @@ public class UserExt extends User {
     protected Boolean confirmed = false;
 
     @NotNull
-    @Column(name = "ACTIVATED", nullable = false)
-    protected Boolean status = false;
+    @Column(name = "STATUS", nullable = false)
+    protected Integer status;
 
     @Column(name = "PHONE_NUMBER")
     protected String phoneNumber;
@@ -44,6 +44,14 @@ public class UserExt extends User {
 
     @Column(name = "COMMENTS", length = 1000)
     protected String comments;
+
+    public void setStatus(UserStatus status) {
+        this.status = status == null ? null : status.getId();
+    }
+
+    public UserStatus getStatus() {
+        return status == null ? null : UserStatus.fromId(status);
+    }
 
     public String getComments() {
         return comments;
@@ -101,11 +109,4 @@ public class UserExt extends User {
         this.confirmed = confirmed;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

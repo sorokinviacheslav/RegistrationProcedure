@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="application-registrationprocedure" insertBefore="administration">
-        <item screen="registrationprocedure_UserExt.browse"/>
         <item screen="registrationprocedure_RegistrationScreen"/>
         <item screen="registrationprocedure_Organization.browse"/>
+        <item screen="registrationprocedure_UserExt.browse"/>
     </menu>
 </menu-config>

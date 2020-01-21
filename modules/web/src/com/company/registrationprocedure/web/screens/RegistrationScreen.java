@@ -46,7 +46,7 @@ public class RegistrationScreen extends Screen {
     private ScreenValidation screenValidation;
 
     @Subscribe("register")
-    public void onRegisterClick(Button.ClickEvent event) throws ValidationException {
+    public void onRegisterClick(Button.ClickEvent event) {
         if(!validateAllWithMessages()) return;
         if(!passwordField.getValue().equals(passwordConfirmField.getValue())) {
             notifications.create(Notifications.NotificationType.TRAY)
@@ -54,23 +54,16 @@ public class RegistrationScreen extends Screen {
                     .show();
             return;
         }
-        try {
-            RegistrationService.RegistrationData regData = new RegistrationService.RegistrationData(login.getValue(),passwordField.getValue(),emailField.getValue(),false);
-            regData.setFirstName(firstNameField.getValue());
-            regData.setLastName(lastNameField.getValue());
-            regData.setMiddleName(middleNameField.getValue());
-            regData.setPhoneNumber(phoneField.getValue());
-            regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
-            regData.setHideEmail(hideEmail.getValue());
-            regData.setOrganization(organizationPickerField.getValue());
-            registrationService.registerUser(regData);
-
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption("Created user " + getLogin())
-                    .show();
-
-            close(WINDOW_COMMIT_AND_CLOSE_ACTION);
-        } catch (MethodParametersValidationException e) {
+        RegistrationService.RegistrationData regData = new RegistrationService.RegistrationData(login.getValue(),passwordField.getValue(),emailField.getValue(),false);
+        regData.setFirstName(firstNameField.getValue());
+        regData.setLastName(lastNameField.getValue());
+        regData.setMiddleName(middleNameField.getValue());
+        regData.setPhoneNumber(phoneField.getValue());
+        regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
+        regData.setHideEmail(hideEmail.getValue());
+        regData.setOrganizationUUID(organizationPickerField.getValue().getId());
+        RegistrationService.RegistrationResult result =registrationService.registerUser(regData);
+        if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)
                     .withCaption(
                             messages.getMessage(
@@ -78,6 +71,10 @@ public class RegistrationScreen extends Screen {
                                     "UserExistsValidator.message"))
                     .show();
         }
+        notifications.create(Notifications.NotificationType.TRAY)
+                .withCaption("Created user " + getLogin())
+                .show();
+        close(WINDOW_COMMIT_AND_CLOSE_ACTION);
     }
 
     public String getPassword() {

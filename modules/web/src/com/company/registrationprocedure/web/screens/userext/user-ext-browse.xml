@@ -2,11 +2,11 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://browseCaption"
         focusComponent="userExtsTable"
-        messagesPack="com.company.registrationprocedure.web.screens">
+        messagesPack="com.company.registrationprocedure.web.screens.userext">
     <data readOnly="true">
         <collection id="userExtsDc"
                     class="com.company.registrationprocedure.entity.UserExt"
-                    view="_local">
+                    view="userExt-view_4">
             <loader id="userExtsDl">
                 <query>
                     <![CDATA[select e from registrationprocedure_UserExt e]]>
@@ -44,8 +44,16 @@
                 <column id="timeZoneAuto"/>
                 <column id="active"/>
                 <column id="changePasswordAtNextLogon"/>
+                <column id="group"/>
                 <column id="ipMask"/>
+                <column id="domainLogin"/>
+                <column id="confirmed"/>
                 <column id="status"/>
+                <column id="phoneNumber"/>
+                <column id="recieveEmailNotifications"/>
+                <column id="hideEmail"/>
+                <column id="organization"/>
+                <column id="comments"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

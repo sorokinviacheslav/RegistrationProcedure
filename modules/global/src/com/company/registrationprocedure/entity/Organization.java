@@ -18,6 +18,18 @@ public class Organization extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     protected String name;
 
+    @NotNull
+    @Column(name = "INN", nullable = false, unique = true, length = 20)
+    protected String inn;
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
     public String getName() {
         return name;
     }

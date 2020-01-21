@@ -16,6 +16,7 @@
         <form id="form" dataContainer="organizationDc">
             <column width="250px">
                 <textField id="nameField" property="name"/>
+                <textField id="innField" property="inn"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

@@ -30,6 +30,7 @@ create table REGISTRATIONPROCEDURE_ORGANIZATION (
     DELETED_BY varchar(50),
     --
     NAME varchar(255) not null,
+    INN varchar(20) not null,
     --
     primary key (ID)
 )^

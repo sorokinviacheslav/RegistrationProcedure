@@ -1,10 +1,11 @@
 package com.company.registrationprocedure.service;
 
+import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.entity.UserStatus;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.app.EmailService;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.Role;
@@ -38,18 +39,31 @@ public class RegistrationServiceBean implements RegistrationService {
     @Inject
     private Persistence persistence;
 
+
     @Override
     @Transactional
     public RegistrationResult registerUser(RegistrationData regData) {
         EntityManager em = persistence.getEntityManager();
+        if(isUserExists(regData.getLogin(),regData.getEmail(),em)) return new RegistrationResult(null);
+        if(!isOrganizationExists(regData.getOrganizationUUID(),em)) return new RegistrationResult(null);
         // Load group and role to be assigned to the new user
         Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
         Role role =em.find(Role.class,UUID.fromString(DEFAULT_ROLE_ID));
+        Organization org = em.find(Organization.class,regData.getOrganizationUUID());
 
         // Create a user instance
         UserExt user = metadata.create(UserExt.class);
         user.setLogin(regData.getLogin());
         user.setPassword(passwordEncryption.getPasswordHash(user.getId(), regData.getPassword()));
+        user.setEmail(regData.getEmail());
+        user.setStatus(UserStatus.NEW);
+        user.setHideEmail(regData.isHideEmail());
+        user.setOrganization(org);
+        user.setPhoneNumber(regData.getPhoneNumber());
+        user.setRecieveEmailNotifications(regData.isEmailNotifications());
+        user.setFirstName(regData.getFirstName());
+        user.setLastName(regData.getLastName());
+        user.setMiddleName(regData.getMiddleName());
 
         // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
         user.setGroup(group);
@@ -67,11 +81,32 @@ public class RegistrationServiceBean implements RegistrationService {
         em.persist(user);
         em.persist(userRole);
         EmailInfo emailInfo = new EmailInfo(
-                "sorokinvv63rus@gmail.com", // recipients
+                user.getEmail(), // recipients
                 "Activate your account",
                 "http://localhost:8080/app/#activate?value=" + user.getId()
         );
         emailService.sendEmailAsync(emailInfo);
         return new RegistrationResult(user);
+    }
+
+    @Override
+    @Transactional
+    public boolean userExists(String login, String email) {
+        EntityManager em = persistence.getEntityManager();
+        return isUserExists(login,email,em);
+    }
+
+    private boolean isUserExists(String login,String email,EntityManager em) {
+        int existing = em.createQuery(
+                "select u from sec$User u where u.loginLowerCase = :login and u.email = :email")
+                        .setParameter("login", login).setParameter("email",email).getResultList().size();
+        return !(existing < 1);
+    }
+
+    private boolean isOrganizationExists(UUID orgUUID,EntityManager em) {
+        int existing = em.createQuery(
+                "select o from registrationprocedure_Organization o where o.id = :id")
+                .setParameter("id", orgUUID).getResultList().size();
+        return !(existing < 1);
     }
 }

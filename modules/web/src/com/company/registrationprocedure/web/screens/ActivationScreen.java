@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.entity.UserStatus;
 import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Button;
@@ -42,12 +43,12 @@ public class ActivationScreen extends Screen {
         if(userExtDc.getItemOrNull()==null) {
             label1.setValue("Invalid link! Please contact support.");
         }
-        else if(userExtDc.getItem().getConfirmed()) {
+        else if(!userExtDc.getItem().getStatus().equals(UserStatus.NEW)) {
             label1.setValue("Your account has been already activated!");
         }
         else {
             label1.setValue("Welcome "+userExtDc.getItem().getLogin()+"!");
-            userExtDc.getItem().setConfirmed(true);
+            userExtDc.getItem().setStatus(UserStatus.EMAIL_CONFIRMED);
             dataContext.commit();
         }
     }

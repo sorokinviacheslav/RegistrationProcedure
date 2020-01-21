@@ -11,4 +11,9 @@
     <view entity="registrationprocedure_UserExt" name="userExt-view_3" extends="_local">
         <property name="organization" view="_minimal"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_4" extends="_local">
+        <property name="organization" view="_minimal"/>
+        <property name="group" view="_minimal"/>
+        <property name="userRoles" view="_minimal"/>
+    </view>
 </views>
