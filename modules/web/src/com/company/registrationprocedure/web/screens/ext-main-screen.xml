@@ -26,6 +26,7 @@
                 <newWindowButton id="newWindowButton"
                                  icon="app/images/new-window.png"
                                  description="mainMsg://newWindowBtnDescription"/>
+                <button id="myAccountButton" caption="My Acc"/>
                 <logoutButton id="logoutButton"
                               icon="app/images/exit.png"
                               description="mainMsg://logoutBtnDescription"/>

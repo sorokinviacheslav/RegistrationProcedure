@@ -1,17 +1,19 @@
 package com.company.registrationprocedure.web.screens;
 
+import com.haulmont.cuba.gui.Screens;
+import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.SizeUnit;
 import com.haulmont.cuba.gui.components.SplitPanel;
 import com.haulmont.cuba.gui.components.Window;
 import com.haulmont.cuba.gui.components.mainwindow.AppWorkArea;
 import com.haulmont.cuba.gui.components.mainwindow.FoldersPane;
-import com.haulmont.cuba.gui.screen.UiController;
-import com.haulmont.cuba.gui.screen.UiDescriptor;
+import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.web.WebConfig;
 import com.haulmont.cuba.web.app.main.MainScreen;
 import com.haulmont.cuba.web.gui.components.WebComponentsHelper;
 import com.haulmont.cuba.web.widgets.CubaHorizontalSplitPanel;
 import com.vaadin.server.Sizeable;
+import jdk.internal.misc.JavaNetUriAccess;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -28,6 +30,8 @@ public class ExtMainScreen extends MainScreen implements Window.HasFoldersPane {
     private AppWorkArea workArea;
     @Inject
     private WebConfig webConfig;
+    @Inject
+    private Screens screens;
 
     public ExtMainScreen() {
         addInitListener(this::initLayout);
@@ -54,6 +58,13 @@ public class ExtMainScreen extends MainScreen implements Window.HasFoldersPane {
             getWindow().expand(workArea);
         }
     }
+
+    @Subscribe("myAccountButton")
+    public void onMyAccountButtonClick(Button.ClickEvent event) {
+        screens.create(UserInfoScreen.class, OpenMode.DIALOG).show();
+    }
+
+
 
     @Nullable
     @Override

@@ -3,17 +3,23 @@ package com.company.registrationprocedure.web.screens;
 import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.service.RegistrationService;
 import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.validation.MethodParametersValidationException;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.screen.*;
+import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
 
 import javax.inject.Inject;
 
 @UiController("registrationprocedure_RegistrationScreen")
 @UiDescriptor("registration-screen.xml")
-public class RegistrationScreen extends Screen {
+public class RegistrationScreen extends AbstractUserViewScreen {
 
+    @Inject
+    private RegistrationService registrationService;
+    @Inject
+    private Notifications notifications;
+    @Inject
+    private Messages messages;
     @Inject
     private PasswordField passwordField;
     @Inject
@@ -36,14 +42,6 @@ public class RegistrationScreen extends Screen {
     private TextField<String> firstNameField;
     @Inject
     private CheckBox emailNotificationsCheckBox;
-    @Inject
-    private RegistrationService registrationService;
-    @Inject
-    private Notifications notifications;
-    @Inject
-    private Messages messages;
-    @Inject
-    private ScreenValidation screenValidation;
 
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) {
@@ -77,22 +75,18 @@ public class RegistrationScreen extends Screen {
         close(WINDOW_COMMIT_AND_CLOSE_ACTION);
     }
 
+    @Subscribe("cancel")
+    public void onCancelClick(Button.ClickEvent event) {
+        close(Screen.WINDOW_DISCARD_AND_CLOSE_ACTION);
+    }
+    
+    
+
     public String getPassword() {
         return passwordField.getValue();
     }
 
     public String getLogin() {
         return login.getValue();
-    }
-
-    private boolean validateAllWithMessages() {
-        ValidationErrors errors = screenValidation.validateUiComponents(this.getWindow().getComponents());
-        if(errors.isEmpty()) return true;
-        for (ValidationErrors.Item er : errors.getAll()) {
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption(er.description)
-                    .show();
-        }
-        return false;
     }
 }
