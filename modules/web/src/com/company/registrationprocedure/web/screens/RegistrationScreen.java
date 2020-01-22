@@ -7,6 +7,7 @@ import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
+import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
 
@@ -51,12 +52,15 @@ public class RegistrationScreen extends AbstractUserViewScreen {
     @Inject
     private CollectionContainer<Organization> organizationsDc;
     @Inject
+    private CollectionLoader<Organization> organizationsDl;
+    @Inject
     private Metadata metadata;
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
+        organizationsDl.load();
         organizationLookupPickerField.setOptionsList(organizationsDc.getItems());
-        organizationLookupPickerField.setMetaClass(metadata.getClass("registrationprocedure_Organization"));
+        /*organizationLookupPickerField.setMetaClass(metadata.getClass("registrationprocedure_Organization"));*/
         BiFunction<String, String, Boolean> predicate = String::contains;
         organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
                 predicate.apply(itemCaption.toLowerCase(), searchString));
