@@ -48,7 +48,7 @@ public class RegistrationServiceBean implements RegistrationService {
         if(!isOrganizationExists(regData.getOrganizationUUID(),em)) return new RegistrationResult(null);
         // Load group and role to be assigned to the new user
         Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
-        Role role =em.find(Role.class,UUID.fromString(DEFAULT_ROLE_ID));
+        Role role =em.find(Role.class,UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
         Organization org = em.find(Organization.class,regData.getOrganizationUUID());
 
         // Create a user instance
@@ -64,6 +64,7 @@ public class RegistrationServiceBean implements RegistrationService {
         user.setFirstName(regData.getFirstName());
         user.setLastName(regData.getLastName());
         user.setMiddleName(regData.getMiddleName());
+        user.setSystemRole(regData.getRole());
 
         // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
         user.setGroup(group);

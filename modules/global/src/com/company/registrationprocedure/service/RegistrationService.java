@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.UserSystemRole;
 import com.haulmont.cuba.security.entity.User;
 
 import java.io.Serializable;
@@ -51,6 +52,7 @@ public interface RegistrationService {
         private boolean hideEmail;
         private String password;
         private UUID organizationUUID;
+        private UserSystemRole role;
 
         public RegistrationData(String login,String password, String email,Boolean isInternal) {
             this.password=password;
@@ -145,6 +147,14 @@ public interface RegistrationService {
 
         public void setOrganizationUUID(UUID organizationUUID) {
             this.organizationUUID = organizationUUID;
+        }
+
+        public UserSystemRole getRole() {
+            return role;
+        }
+
+        public void setRole(UserSystemRole role) {
+            this.role = role;
         }
     }
 }

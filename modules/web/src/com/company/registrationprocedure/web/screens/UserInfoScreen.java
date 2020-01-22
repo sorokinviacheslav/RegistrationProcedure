@@ -15,7 +15,7 @@ import com.haulmont.cuba.security.global.UserSession;
 import javax.inject.Inject;
 import java.util.UUID;
 
-@UiController("ext-registrationprocedure_AbstractUserViewScreen")
+@UiController("registrationprocedure_UserInfoScreen")
 @UiDescriptor("user-info-screen.xml")
 public class UserInfoScreen extends AbstractUserViewScreen {
 

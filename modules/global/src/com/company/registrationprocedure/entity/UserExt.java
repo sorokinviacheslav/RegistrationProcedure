@@ -1,9 +1,6 @@
 package com.company.registrationprocedure.entity;
 
-import com.haulmont.cuba.core.entity.annotation.Extends;
-import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
-import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
+import com.haulmont.cuba.core.entity.annotation.*;
 import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.security.entity.User;
 
@@ -13,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @PublishEntityChangedEvents
 @Extends(User.class)
 @Entity(name = "registrationprocedure_UserExt")
+@Listeners("registrationprocedure_UserExtEntityListener")
 public class UserExt extends User {
     private static final long serialVersionUID = -6864145103277166530L;
 
@@ -21,7 +19,7 @@ public class UserExt extends User {
 
     @NotNull
     @Column(name = "ROLE", nullable = false)
-    protected Integer role;
+    protected Integer systemRole;
 
     @NotNull
     @Column(name = "STATUS", nullable = false)
@@ -47,12 +45,12 @@ public class UserExt extends User {
     @Column(name = "COMMENTS", length = 1000)
     protected String comments;
 
-    public UserSystemRole getRole() {
-        return role == null ? null : UserSystemRole.fromId(role);
+    public UserSystemRole getSystemRole() {
+        return systemRole == null ? null : UserSystemRole.fromId(systemRole);
     }
 
-    public void setRole(UserSystemRole role) {
-        this.role = role == null ? null : role.getId();
+    public void setSystemRole(UserSystemRole systemRole) {
+        this.systemRole = systemRole == null ? null : systemRole.getId();
     }
 
     public void setStatus(UserStatus status) {

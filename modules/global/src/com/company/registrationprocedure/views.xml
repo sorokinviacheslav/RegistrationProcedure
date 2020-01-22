@@ -25,7 +25,7 @@
         <property name="middleName"/>
     </view>
     <view entity="registrationprocedure_UserExt" name="userExt-view_6" extends="_minimal">
-        <property name="role"/>
+        <property name="systemRole"/>
         <property name="status"/>
         <property name="phoneNumber"/>
         <property name="recieveEmailNotifications"/>

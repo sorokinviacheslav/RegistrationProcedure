@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.UserSystemRole;
 import com.company.registrationprocedure.service.RegistrationService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.Metadata;
@@ -95,6 +96,7 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
         regData.setHideEmail(hideEmail.getValue());
         regData.setOrganizationUUID(organizationLookupPickerField.getValue().getId());
+        regData.setRole(UserSystemRole.ADMINISTRATOR);
         RegistrationService.RegistrationResult result =registrationService.registerUser(regData);
         if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)
