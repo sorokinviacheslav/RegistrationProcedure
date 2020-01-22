@@ -4,5 +4,6 @@
 
         <class>com.company.registrationprocedure.entity.UserExt</class>
         <class>com.company.registrationprocedure.entity.Organization</class>
+        <class>com.company.registrationprocedure.entity.RoleExt</class>
     </persistence-unit>
 </persistence>

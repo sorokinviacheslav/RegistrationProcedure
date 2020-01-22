@@ -36,3 +36,13 @@ create table REGISTRATIONPROCEDURE_ORGANIZATION (
     primary key (ID)
 )^
 -- end REGISTRATIONPROCEDURE_ORGANIZATION
+-- begin SEC_ROLE
+alter table SEC_ROLE add column ORGANIZATION_ROLE integer ^
+update SEC_ROLE set ORGANIZATION_ROLE = 10 where ORGANIZATION_ROLE is null ^
+alter table SEC_ROLE alter column ORGANIZATION_ROLE set not null ^
+alter table SEC_ROLE add column USER_ROLE integer ^
+update SEC_ROLE set USER_ROLE = 10 where USER_ROLE is null ^
+alter table SEC_ROLE alter column USER_ROLE set not null ^
+alter table SEC_ROLE add column DTYPE varchar(100) ^
+update SEC_ROLE set DTYPE = 'registrationprocedure_RoleExt' where DTYPE is null ^
+-- end SEC_ROLE

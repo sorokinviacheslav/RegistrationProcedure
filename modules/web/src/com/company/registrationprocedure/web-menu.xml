@@ -4,5 +4,6 @@
         <item screen="registrationprocedure_RegistrationScreen"/>
         <item screen="registrationprocedure_Organization.browse"/>
         <item screen="registrationprocedure_UserExt.browse"/>
+        <item screen="registrationprocedure_RoleExt.browse"/>
     </menu>
 </menu-config>
