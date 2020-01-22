@@ -1,23 +1,19 @@
 package com.company.registrationprocedure.web.screens;
 
-import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.UserExt;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.components.Actions;
+import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.model.InstanceLoader;
-import com.haulmont.cuba.gui.screen.Subscribe;
-import com.haulmont.cuba.gui.screen.Target;
-import com.haulmont.cuba.gui.screen.UiController;
-import com.haulmont.cuba.gui.screen.UiDescriptor;
-import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
-import com.haulmont.cuba.security.global.UserSession;
+import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import java.util.UUID;
 
-@UiController("registrationprocedure_UserInfoScreen")
-@UiDescriptor("user-info-screen.xml")
-public class UserInfoScreen extends AbstractUserViewScreen {
+@UiController("registrationprocedure_UserInfoAndEditScreen")
+@UiDescriptor("user-info-and-edit-screen.xml")
+public class UserInfoAndEditScreen extends AbstractUserViewScreen {
 
     @Inject
     private InstanceContainer<UserExt> userExtDc;
@@ -41,5 +37,16 @@ public class UserInfoScreen extends AbstractUserViewScreen {
         }
         userExtDl.load();
     }
+
+    @Subscribe("backButton")
+    public void onBackButtonClick(Button.ClickEvent event) {
+        close(Screen.WINDOW_DISCARD_AND_CLOSE_ACTION);
+    }
+
+    @Subscribe("editAccountButton")
+    public void onEditAccountButtonClick(Button.ClickEvent event) {
+        setAllElementsEditable(true);
+    }
+
 
 }

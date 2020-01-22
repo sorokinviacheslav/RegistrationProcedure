@@ -25,4 +25,15 @@ public class AbstractUserViewScreen extends Screen {
         }
         return false;
     }
+
+    protected void setAllElementsEditable(boolean param) {
+        for(Component c: this.getWindow().getComponents()) {
+            if(c instanceof Component.Editable) {
+                ((Component.Editable) c).setEditable(param);
+            }
+            else {
+                c.setEnabled(param);
+            }
+        }
+    }
 }

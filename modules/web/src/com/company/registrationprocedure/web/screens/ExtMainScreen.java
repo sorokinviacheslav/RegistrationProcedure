@@ -61,7 +61,7 @@ public class ExtMainScreen extends MainScreen implements Window.HasFoldersPane {
 
     @Subscribe("myAccountButton")
     public void onMyAccountButtonClick(Button.ClickEvent event) {
-        screens.create(UserInfoScreen.class, OpenMode.DIALOG).show();
+        screens.create(UserInfoAndEditScreen.class, OpenMode.DIALOG).show();
     }
 
 
