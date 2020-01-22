@@ -12,6 +12,8 @@ import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
 
 import javax.inject.Inject;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 @UiController("registrationprocedure_RegistrationScreen")
@@ -35,8 +37,6 @@ public class RegistrationScreen extends AbstractUserViewScreen {
     @Inject
     private TextField<String> emailField;
     @Inject
-    private PickerField<Organization> organizationPickerField;
-    @Inject
     private TextField<String> middleNameField;
     @Inject
     private TextField<String> lastNameField;
@@ -53,17 +53,29 @@ public class RegistrationScreen extends AbstractUserViewScreen {
     private CollectionContainer<Organization> organizationsDc;
     @Inject
     private CollectionLoader<Organization> organizationsDl;
-    @Inject
-    private Metadata metadata;
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+        organizationsDl.load();
+        organizationLookupPickerField.setOptionsList(organizationsDc.getItems());
+        organizationLookupPickerField.setPageLength(10);
+        BiFunction<String, String, Boolean> predicate = String::contains;
+        /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
+                predicate.apply(itemCaption.toLowerCase(), searchString));*/
+        organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->{
+            for(Organization org: organizationsDc.getItems()) {
+                if(itemCaption.equals(org.getName())) {
+                    String orgData = "" + org.getName() + org.getInn();
+                    return predicate.apply(orgData.toLowerCase(), searchString);
+                }
+            }
+            return false;
+        } );
+    }
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
-        organizationsDl.load();
-        organizationLookupPickerField.setOptionsList(organizationsDc.getItems());
-        /*organizationLookupPickerField.setMetaClass(metadata.getClass("registrationprocedure_Organization"));*/
-        BiFunction<String, String, Boolean> predicate = String::contains;
-        organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
-                predicate.apply(itemCaption.toLowerCase(), searchString));
+
     }
 
     @Subscribe("register")
@@ -82,7 +94,7 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         regData.setPhoneNumber(phoneField.getValue());
         regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
         regData.setHideEmail(hideEmail.getValue());
-        regData.setOrganizationUUID(organizationPickerField.getValue().getId());
+        regData.setOrganizationUUID(organizationLookupPickerField.getValue().getId());
         RegistrationService.RegistrationResult result =registrationService.registerUser(regData);
         if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)

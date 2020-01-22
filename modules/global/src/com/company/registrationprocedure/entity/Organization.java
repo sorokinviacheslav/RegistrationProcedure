@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@NamePattern("%s|name")
+@NamePattern("%s %s|name,inn")
 @Table(name = "REGISTRATIONPROCEDURE_ORGANIZATION")
 @Entity(name = "registrationprocedure_Organization")
 public class Organization extends StandardEntity {

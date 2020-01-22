@@ -5,7 +5,7 @@
     <data>
         <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization"
                     view="organization-view">
-            <loader id="organizationsDl" dynamicAttributes="true" firstResult="1" maxResults="20">
+            <loader id="organizationsDl" dynamicAttributes="true">
                 <query>
                     <![CDATA[select e from registrationprocedure_Organization e]]>
                 </query>
@@ -17,15 +17,8 @@
             <column>
                 <passwordField id="passwordField" caption="Password" required="true" ext:index="1"/>
                 <passwordField id="passwordConfirmField" caption="repeatPassword" required="true" ext:index="2"/>
-                <pickerField id="organizationPickerField" metaClass="registrationprocedure_Organization" property="name"
-                             required="true" caption="Organization">
-                    <actions>
-                        <action id="lookup" type="picker_lookup"/>
-                        <action id="clear" type="picker_clear"/>
-                    </actions>
-                </pickerField>
-                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
-                                   captionProperty="name" required="true" filterMode="NO">
+                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc" required="true"
+                                   filterMode="NO" caption="Organization" captionProperty="name">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="open" type="picker_open"/>
