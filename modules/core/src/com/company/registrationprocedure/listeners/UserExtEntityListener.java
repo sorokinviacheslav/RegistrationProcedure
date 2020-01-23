@@ -9,7 +9,9 @@ import com.haulmont.cuba.security.entity.UserRole;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Component("registrationprocedure_UserExtEntityListener")
@@ -31,20 +33,20 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
     private void assignRoles(UserExt user, EntityManager em) {
         if(user.getStatus().equals(UserStatus.NEW)||user.getStatus().equals(UserStatus.DEACTIVATED)) {
             //new and deactivated users can't log in
-            deleteCurrentRoles(user,em);
+            //deleteCurrentRoles(user,em);
             setRestrictedRole(user,em);
             user.setActive(false);
         }
         else if(!user.getStatus().equals(UserStatus.ACTIVATED)) {
             //Assign restricted role with permission to see user info screen only
             //We don't care about organization type here
-            deleteCurrentRoles(user,em);
+            //deleteCurrentRoles(user,em);
             setRestrictedRole(user,em);
             user.setActive(true);
         }
         else {
             //Main role assignment happens here
-            deleteCurrentRoles(user,em);
+            //deleteCurrentRoles(user,em);
             setProperRoles(user,em);
             user.setActive(true);
         }
@@ -59,20 +61,34 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
     }
 
     private void setRestrictedRole(UserExt user,EntityManager em) {
+        List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
+                "r.user = :user ").setParameter("user",user).getResultList();
         RoleExt role = em.find(RoleExt.class, UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
-        user.getUserRoles().clear();
-        UserRole userRole = metadata.create(UserRole.class);
-        userRole.setUser(user);
-        userRole.setRole(role);
-        em.persist(userRole);
+        boolean hasRestrictedRole = false;
+        for(UserRole ur: currentUserRoles) {
+            if(!ur.getRole().equals(role)) {
+                em.remove(ur);
+            }
+            else {
+                hasRestrictedRole = true;
+            }
+        }
+        if(!hasRestrictedRole) {
+            UserRole userRole = metadata.create(UserRole.class);
+            userRole.setUser(user);
+            userRole.setRole(role);
+            em.persist(userRole);
+        }
     }
 
     private void setProperRoles(UserExt user,EntityManager em) {
+        List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
+                "r.user = :user ").setParameter("user",user).getResultList();
         List<RoleExt> roles = em.createQuery("select r from registrationprocedure_RoleExt r where " +
                 "r.organizationRole = :org "+"and r.userRole = :user ").setParameter("org",user.getOrganization().getRole()).setParameter("user",user.getSystemRole()).getResultList();
-        //delete current roles
-        //TO DO move to separate function
-        deleteCurrentRoles(user,em);
+        for(UserRole ur: currentUserRoles) {
+            em.remove(ur);
+        }
         for(RoleExt role:roles) {
             UserRole userRole = metadata.create(UserRole.class);
             userRole.setUser(user);

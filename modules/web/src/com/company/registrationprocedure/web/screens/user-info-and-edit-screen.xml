@@ -20,7 +20,8 @@
                           property="recieveEmailNotifications"/>
                 <checkBox id="hideEmail" editable="false" dataContainer="userExtDc" property="hideEmail"/>
                 <hbox expand="organizationField" spacing="true">
-                    <textField id="organizationField" caption="Organization" editable="false"/>
+                    <textField id="organizationField" caption="Organization" editable="false" dataContainer="userExtDc"
+                               property="organization"/>
                     <button id="organizationEditButton" align="BOTTOM_RIGHT" caption="Edit" enable="false"/>
                 </hbox>
                 <buttonsPanel>
