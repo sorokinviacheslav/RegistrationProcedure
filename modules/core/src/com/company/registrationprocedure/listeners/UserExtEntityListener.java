@@ -64,6 +64,7 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
         List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
                 "r.user = :user ").setParameter("user",user).getResultList();
         RoleExt role = em.find(RoleExt.class, UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
+        //TO DO try to use Set instead of this check and use seUserRoles for User
         boolean hasRestrictedRole = false;
         for(UserRole ur: currentUserRoles) {
             if(!ur.getRole().equals(role)) {
