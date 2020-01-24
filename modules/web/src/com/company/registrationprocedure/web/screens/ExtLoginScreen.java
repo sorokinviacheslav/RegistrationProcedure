@@ -13,7 +13,6 @@ import com.haulmont.cuba.web.app.login.LoginScreen;
 import javax.inject.Inject;
 import java.util.List;
 
-
 @UiController("login")
 @UiDescriptor("ext-login-screen.xml")
 public class ExtLoginScreen extends LoginScreen {
