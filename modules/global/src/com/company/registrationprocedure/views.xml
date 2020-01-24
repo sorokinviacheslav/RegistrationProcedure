@@ -42,4 +42,9 @@
         <property name="email"/>
         <property name="inn"/>
     </view>
+    <view entity="sec$EntityLog" name="entityLogItem-view" extends="_local">
+        <property name="user" view="_minimal"/>
+        <property name="entityRef" view="_minimal"/>
+        <property name="attributes" view="_minimal"/>
+    </view>
 </views>

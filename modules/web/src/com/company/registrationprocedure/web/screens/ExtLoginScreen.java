@@ -1,14 +1,17 @@
 package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.UserExt;
-import com.company.registrationprocedure.service.RegistrationService;
+import com.haulmont.cuba.core.app.DataService;
 import com.haulmont.cuba.core.global.*;
-import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.CssLayout;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.security.auth.Credentials;
+import com.haulmont.cuba.security.auth.LoginPasswordCredentials;
+import com.haulmont.cuba.security.global.LoginException;
 import com.haulmont.cuba.web.app.login.LoginScreen;
+
 import javax.inject.Inject;
+import java.util.List;
 
 
 @UiController("login")
@@ -17,8 +20,32 @@ public class ExtLoginScreen extends LoginScreen {
 
     @Inject
     private Button loginButton;
+
     @Inject
-    private Metadata metadata;
+    private DataService dataService;
+
+    @Override
+    protected void doLogin(Credentials cr) throws LoginException {
+        LoginPasswordCredentials extCred = (LoginPasswordCredentials)cr;
+        extCred.setLogin(findLoginByEmail(extCred.getLogin()));
+        super.doLogin(extCred);
+    }
+
+    private String findLoginByEmail(String email) throws LoginException {
+        if (!email.contains("@")) {
+            return email;
+        }
+        // find user login by email using dataService
+        List<UserExt> users = dataService.loadList(LoadContext.create(UserExt.class)
+                .setQuery(new LoadContext.Query("select u from registrationprocedure_UserExt u where u.email = :email")
+                        .setParameter("email", email)));
+
+        if (users.isEmpty()) {
+            throw new LoginException("Unable to find user");
+        }
+
+        return users.get(0).getLogin();
+    }
 
     @Subscribe("testButton")
     public void onTestButtonClick(Button.ClickEvent event) {
