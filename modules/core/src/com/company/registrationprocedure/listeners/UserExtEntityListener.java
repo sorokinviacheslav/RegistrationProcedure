@@ -9,9 +9,7 @@ import com.haulmont.cuba.security.entity.UserRole;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Component("registrationprocedure_UserExtEntityListener")
