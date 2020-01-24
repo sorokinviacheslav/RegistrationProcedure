@@ -31,30 +31,19 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
     private void assignRoles(UserExt user, EntityManager em) {
         if(user.getStatus().equals(UserStatus.NEW)||user.getStatus().equals(UserStatus.DEACTIVATED)) {
             //new and deactivated users can't log in
-            //deleteCurrentRoles(user,em);
             setRestrictedRole(user,em);
             user.setActive(false);
         }
         else if(!user.getStatus().equals(UserStatus.ACTIVATED)) {
             //Assign restricted role with permission to see user info screen only
             //We don't care about organization type here
-            //deleteCurrentRoles(user,em);
             setRestrictedRole(user,em);
             user.setActive(true);
         }
         else {
             //Main role assignment happens here
-            //deleteCurrentRoles(user,em);
             setProperRoles(user,em);
             user.setActive(true);
-        }
-    }
-
-    private void deleteCurrentRoles(UserExt user,EntityManager em) {
-        List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
-                "r.user = :user ").setParameter("user",user).getResultList();
-        for(UserRole ur: currentUserRoles) {
-            em.remove(ur);
         }
     }
 
