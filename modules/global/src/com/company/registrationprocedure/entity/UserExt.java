@@ -25,7 +25,8 @@ public class UserExt extends User {
     @Column(name = "STATUS", nullable = false)
     protected Integer status;
 
-    @Column(name = "PHONE_NUMBER")
+    @NotNull
+    @Column(name = "PHONE_NUMBER", nullable = false)
     protected String phoneNumber;
 
     @NotNull
@@ -36,9 +37,10 @@ public class UserExt extends User {
     @Column(name = "HIDE_EMAIL", nullable = false)
     protected Boolean hideEmail = false;
 
+    @NotNull
     @OnDeleteInverse(DeletePolicy.CASCADE)
     @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ORGANIZATION_ID")
     protected Organization organization;
 
