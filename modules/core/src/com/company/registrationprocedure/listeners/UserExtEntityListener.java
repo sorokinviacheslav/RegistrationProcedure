@@ -5,6 +5,7 @@ import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.listener.BeforeInsertEntityListener;
 import com.haulmont.cuba.core.listener.BeforeUpdateEntityListener;
+import com.haulmont.cuba.security.entity.Role;
 import com.haulmont.cuba.security.entity.UserRole;
 import org.springframework.stereotype.Component;
 
@@ -70,18 +71,26 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
     }
 
     private void setProperRoles(UserExt user,EntityManager em) {
-        List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
+        if(user.getLogin().equalsIgnoreCase("admin")) {
+            return;
+        }
+        List<UserRole> currentRoles = em.createQuery("select r from sec$UserRole r where " +
                 "r.user = :user ").setParameter("user",user).getResultList();
-        List<RoleExt> roles = em.createQuery("select r from registrationprocedure_RoleExt r where " +
+        List<RoleExt> newRoles = em.createQuery("select r from registrationprocedure_RoleExt r where " +
                 "r.organizationRole = :org "+"and r.userRole = :user ").setParameter("org",user.getOrganization().getRole()).setParameter("user",user.getSystemRole()).getResultList();
-        for(UserRole ur: currentUserRoles) {
-            em.remove(ur);
+        for(UserRole currentRole :currentRoles) {
+            if(!newRoles.contains(currentRole.getRole())) {
+                em.remove(currentRole);
+            }
         }
-        for(RoleExt role:roles) {
-            UserRole userRole = metadata.create(UserRole.class);
-            userRole.setUser(user);
-            userRole.setRole(role);
-            em.persist(userRole);
+        for(RoleExt newRole: newRoles) {
+            if(!currentRoles.contains(newRole)) {
+                UserRole userRole = metadata.create(UserRole.class);
+                userRole.setUser(user);
+                userRole.setRole(newRole);
+                em.persist(userRole);
+            }
         }
+
     }
 }

@@ -1,17 +1,24 @@
 package com.company.registrationprocedure.web.screens;
 
+import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.RoleExt;
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.entity.UserStatus;
+import com.company.registrationprocedure.service.RegistrationService;
 import com.haulmont.cuba.core.app.DataService;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.security.auth.Credentials;
 import com.haulmont.cuba.security.auth.LoginPasswordCredentials;
+import com.haulmont.cuba.security.entity.Role;
+import com.haulmont.cuba.security.entity.UserRole;
 import com.haulmont.cuba.security.global.LoginException;
 import com.haulmont.cuba.web.app.login.LoginScreen;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
 
 @UiController("login")
 @UiDescriptor("ext-login-screen.xml")
@@ -22,6 +29,12 @@ public class ExtLoginScreen extends LoginScreen {
 
     @Inject
     private DataService dataService;
+    @Inject
+    private PasswordEncryption passwordEncryption;
+    @Inject
+    private Metadata metadata;
+    @Inject
+    private RegistrationService registrationService;
 
     @Override
     protected void doLogin(Credentials cr) throws LoginException {
@@ -46,10 +59,10 @@ public class ExtLoginScreen extends LoginScreen {
         return users.get(0).getLogin();
     }
 
-    @Subscribe("testButton")
+    /*@Subscribe("testButton")
     public void onTestButtonClick(Button.ClickEvent event) {
 
-    }
+    }*/
 
     @Subscribe("registerButton")
     public void onRegisterButtonClick(Button.ClickEvent event) {

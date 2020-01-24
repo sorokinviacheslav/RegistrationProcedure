@@ -37,10 +37,9 @@ public class UserExt extends User {
     @Column(name = "HIDE_EMAIL", nullable = false)
     protected Boolean hideEmail = false;
 
-    @NotNull
     @OnDeleteInverse(DeletePolicy.CASCADE)
     @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORGANIZATION_ID")
     protected Organization organization;
 

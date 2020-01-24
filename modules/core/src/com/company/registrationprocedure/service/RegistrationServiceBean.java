@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.RoleExt;
 import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.entity.UserStatus;
 import com.haulmont.cuba.core.EntityManager;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.UUID;
 
 

@@ -8,7 +8,7 @@
         </instance>
     </data>
     <layout>
-        <form editable="false">
+        <form>
             <column>
                 <textField id="login" required="false" editable="false" dataContainer="userExtDc" property="login"/>
                 <textField id="emailField" editable="false" dataContainer="userExtDc" property="email"/>
