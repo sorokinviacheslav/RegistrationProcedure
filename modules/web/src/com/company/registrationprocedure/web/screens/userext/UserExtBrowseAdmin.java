@@ -1,9 +1,13 @@
 package com.company.registrationprocedure.web.screens.userext;
 
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.list.EditAction;
+import com.haulmont.cuba.gui.components.Action;
+import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.entity.UserExt;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 @UiController("registrationprocedure_UserExtAdmin.browse")
@@ -11,13 +15,19 @@ import javax.inject.Named;
 @LookupComponent("userExtsTable")
 @LoadDataBeforeShow
 public class UserExtBrowseAdmin extends StandardLookup<UserExt> {
-    @Named("userExtsTable.edit")
-    private EditAction userExtsTableEdit;
+    @Inject
+    private ScreenBuilders screenBuilders;
+    @Inject
+    private GroupTable<UserExt> userExtsTable;
 
-    @Subscribe
-    public void onInit(InitEvent event) {
-        userExtsTableEdit.setScreenId("registrationprocedure_UserExtAdmin.edit");
+    @Subscribe("userExtsTable.edit")
+    protected void onUserExtsTableEditActionPerformed(Action.ActionPerformedEvent event) {
+        screenBuilders.editor(userExtsTable)
+                .newEntity()
+                .withScreenClass(UserExtEditAdmin.class)     // specific editor screen
+                .withLaunchMode(OpenMode.DIALOG)        // open as modal dialog
+                .build()
+                .show();
     }
-
 
 }
