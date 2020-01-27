@@ -6,6 +6,7 @@ import com.haulmont.cuba.core.entity.StandardEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @NamePattern("%s|name")
@@ -18,6 +19,7 @@ public class Organization extends StandardEntity {
     @Column(name = "ROLE", nullable = false)
     protected Integer role;
 
+    @Email(message = "{msg://registrationprocedure_Organization.email.validation.Email}")
     @NotNull
     @Column(name = "EMAIL", nullable = false)
     protected String email;

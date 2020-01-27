@@ -47,4 +47,24 @@
         <property name="entityRef" view="_minimal"/>
         <property name="attributes" view="_minimal"/>
     </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_7" extends="_local">
+        <property name="organization" view="_minimal"/>
+    </view>
+    <view entity="registrationprocedure_Organization" name="organization-view_1" extends="_local"/>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_8" extends="_minimal">
+        <property name="domainLogin"/>
+        <property name="systemRole"/>
+        <property name="status"/>
+        <property name="phoneNumber"/>
+        <property name="organization" view="_minimal"/>
+        <property name="comments"/>
+        <property name="firstName"/>
+        <property name="lastName"/>
+        <property name="middleName"/>
+        <property name="email"/>
+    </view>
+    <view entity="registrationprocedure_UserExt" name="userExt-view_9" extends="_minimal">
+        <property name="status"/>
+        <property name="comments"/>
+    </view>
 </views>

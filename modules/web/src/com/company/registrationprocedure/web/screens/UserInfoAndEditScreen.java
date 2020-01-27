@@ -2,15 +2,21 @@ package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.web.screens.organization.OrganizationEdit;
 import com.haulmont.cuba.core.app.DataService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.Screens;
+import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.model.InstanceLoader;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.UUID;
 
 @UiController("registrationprocedure_UserInfoAndEditScreen")
@@ -23,10 +29,6 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
     private InstanceContainer<UserExt> userExtDc;
     @Inject
     private TextField<String> firstNameField;
-    @Inject
-    private TextField<Organization> organizationField;
-    @Inject
-    private Button organizationEditButton;
     @Inject
     private TextField<String> middleNameField;
     @Inject
@@ -45,12 +47,18 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
     private TextField<String> emailField;
     @Inject
     private Button editAccountButton;
+    @Inject
+    private PickerField<Organization> orgPickerField;
 
     private UUID userId =null;
     private boolean editMode = false;
 
     @Inject
     private DataManager dataManager;
+    @Inject
+    private ScreenBuilders screenBuilders;
+    @Inject
+    private Screens screens;
 
     public void setUserId(UUID id) {
         this.userId = id;
@@ -74,6 +82,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
             userExtDl.setEntityId(userId);
         }
         userExtDl.load();
+        orgPickerField.getAction("open").setEnabled(false);
+        orgPickerField.setFieldEditable(false);
     }
 
     @Subscribe("backButton")
@@ -88,7 +98,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
             firstNameField.setEditable(true);
             middleNameField.setEditable(true);
             lastNameField.setEditable(true);
-            organizationEditButton.setEnabled(true);
+            orgPickerField.setEnabled(true);
+            orgPickerField.getAction("open").setEnabled(true);
             hideEmail.setEditable(true);
             emailNotificationsCheckBox.setEditable(true);
             editAccountButton.setCaption("Save Changes");
@@ -106,7 +117,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
             firstNameField.setEditable(false);
             middleNameField.setEditable(false);
             lastNameField.setEditable(false);
-            organizationEditButton.setEnabled(false);
+            orgPickerField.setEnabled(false);
+            orgPickerField.getAction("open").setEnabled(false);
             hideEmail.setEditable(false);
             emailNotificationsCheckBox.setEditable(false);
             editAccountButton.setCaption("Edit Profile");

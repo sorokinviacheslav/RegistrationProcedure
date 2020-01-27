@@ -19,11 +19,11 @@
                 <checkBox id="emailNotificationsCheckBox" editable="false" dataContainer="userExtDc"
                           property="recieveEmailNotifications"/>
                 <checkBox id="hideEmail" editable="false" dataContainer="userExtDc" property="hideEmail"/>
-                <hbox expand="organizationField" spacing="true">
-                    <textField id="organizationField" caption="Organization" editable="false" dataContainer="userExtDc"
-                               property="organization"/>
-                    <button id="organizationEditButton" align="BOTTOM_RIGHT" caption="Edit" enable="false"/>
-                </hbox>
+                <pickerField id="orgPickerField" dataContainer="userExtDc" property="organization" editable="false">
+                    <actions>
+                        <action id="open" type="picker_open"/>
+                    </actions>
+                </pickerField>
                 <buttonsPanel>
                     <button id="editAccountButton" caption="Edit Profile"/>
                     <button id="backButton" caption="Back"/>

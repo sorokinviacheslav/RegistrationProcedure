@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://editorCaption"
+        focusComponent="form"
+        messagesPack="com.company.registrationprocedure.web.screens.userext">
+    <data>
+        <instance id="userExtDc"
+                  class="com.company.registrationprocedure.entity.UserExt"
+                  view="userExt-view_9">
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="userExtDc">
+            <column width="250px">
+                <textField id="loginField" property="login" editable="false"/>
+                <lookupField id="statusField" property="status"/>
+                <textField id="commentsField" property="comments"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
