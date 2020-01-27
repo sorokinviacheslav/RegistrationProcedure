@@ -84,7 +84,7 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
             }
         }
         for(RoleExt newRole: newRoles) {
-            if(!currentRoles.contains(newRole)) {
+            if(!currentRoles.stream().anyMatch(r->r.getRole().equals(newRole))) {
                 UserRole userRole = metadata.create(UserRole.class);
                 userRole.setUser(user);
                 userRole.setRole(newRole);

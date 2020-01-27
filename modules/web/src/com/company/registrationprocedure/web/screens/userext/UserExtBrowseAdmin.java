@@ -21,7 +21,7 @@ public class UserExtBrowseAdmin extends StandardLookup<UserExt> {
     @Subscribe("userExtsTable.edit")
     protected void onUserExtsTableEditActionPerformed(Action.ActionPerformedEvent event) {
         screenBuilders.editor(userExtsTable)
-                .newEntity()
+                //.editEntity(userExtsTable.getSingleSelected())
                 .withScreenClass(UserExtEditAdmin.class)     // specific editor screen
                 .withLaunchMode(OpenMode.DIALOG)        // open as modal dialog
                 .build()

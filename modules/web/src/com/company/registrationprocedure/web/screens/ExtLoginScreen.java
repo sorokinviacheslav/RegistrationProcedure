@@ -28,13 +28,7 @@ public class ExtLoginScreen extends LoginScreen {
     private Button loginButton;
 
     @Inject
-    private DataService dataService;
-    @Inject
-    private PasswordEncryption passwordEncryption;
-    @Inject
-    private Metadata metadata;
-    @Inject
-    private RegistrationService registrationService;
+    private DataManager dataManager;
 
     @Override
     protected void doLogin(Credentials cr) throws LoginException {
@@ -48,7 +42,7 @@ public class ExtLoginScreen extends LoginScreen {
             return email;
         }
         // find user login by email using dataService
-        List<UserExt> users = dataService.loadList(LoadContext.create(UserExt.class)
+        List<UserExt> users = dataManager.loadList(LoadContext.create(UserExt.class)
                 .setQuery(new LoadContext.Query("select u from registrationprocedure_UserExt u where u.email = :email")
                         .setParameter("email", email)));
 

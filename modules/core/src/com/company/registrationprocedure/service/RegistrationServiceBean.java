@@ -50,7 +50,7 @@ public class RegistrationServiceBean implements RegistrationService {
         if(!isOrganizationExists(regData.getOrganizationUUID(),em)) return new RegistrationResult(null);
         // Load group and role to be assigned to the new user
         Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
-        Role role =em.find(Role.class,UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
+        //Role role =em.find(Role.class,UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
         Organization org = em.find(Organization.class,regData.getOrganizationUUID());
 
         // Create a user instance
@@ -76,13 +76,13 @@ public class RegistrationServiceBean implements RegistrationService {
          * Another way is to set the default role by using the DB scripts. Set IS_DEFAULT_ROLE parameter to true in the insert script for the role.
          * Also, this parameter might be changed in the Role Editor screen.
          */
-        UserRole userRole = metadata.create(UserRole.class);
+        /*UserRole userRole = metadata.create(UserRole.class);
         userRole.setUser(user);
-        userRole.setRole(role);
+        userRole.setRole(role);*/
 
         // Save new entities
         em.persist(user);
-        em.persist(userRole);
+        //em.persist(userRole);
         EmailInfo emailInfo = new EmailInfo(
                 user.getEmail(), // recipients
                 "Activate your account",

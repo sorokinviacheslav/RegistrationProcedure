@@ -67,4 +67,5 @@
         <property name="status"/>
         <property name="comments"/>
     </view>
+    <view entity="registrationprocedure_RoleExt" name="roleExt-view" extends="_local"/>
 </views>

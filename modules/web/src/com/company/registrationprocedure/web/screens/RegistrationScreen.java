@@ -96,7 +96,7 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
         regData.setHideEmail(hideEmail.getValue());
         regData.setOrganizationUUID(organizationLookupPickerField.getValue().getId());
-        regData.setRole(UserSystemRole.ADMINISTRATOR);
+        regData.setRole(UserSystemRole.ACCESS_ADMINISTRATOR);
         RegistrationService.RegistrationResult result =registrationService.registerUser(regData);
         if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)
