@@ -101,7 +101,7 @@ public class RegistrationServiceBean implements RegistrationService {
 
     private boolean isUserExists(String login,String email,EntityManager em) {
         int existing = em.createQuery(
-                "select u from sec$User u where u.loginLowerCase = :login and u.email = :email")
+                "select u from sec$User u where u.loginLowerCase = :login or u.email = :email")
                         .setParameter("login", login).setParameter("email",email).getResultList().size();
         return !(existing < 1);
     }

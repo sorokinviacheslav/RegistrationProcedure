@@ -101,10 +101,9 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)
                     .withCaption(
-                            messages.getMessage(
-                                    "com.company.sample.validation",
-                                    "UserExistsValidator.message"))
+                            "User with these email and login already exists!")
                     .show();
+            return;
         }
         notifications.create(Notifications.NotificationType.TRAY)
                 .withCaption("Created user " + getLogin())
@@ -117,8 +116,6 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         close(Screen.WINDOW_DISCARD_AND_CLOSE_ACTION);
     }
     
-    
-
     public String getPassword() {
         return passwordField.getValue();
     }

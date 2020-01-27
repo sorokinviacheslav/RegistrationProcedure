@@ -25,7 +25,7 @@ public interface RegistrationService {
                 this.success = true;
             }
             else {
-                this.userId =UUID.fromString("0");
+                this.userId =null;
                 this.success = false;
             }
         }
