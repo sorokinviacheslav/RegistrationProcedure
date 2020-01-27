@@ -7,7 +7,6 @@ import com.haulmont.cuba.security.entity.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@PublishEntityChangedEvents
 @Extends(User.class)
 @Entity(name = "registrationprocedure_UserExt")
 @Listeners("registrationprocedure_UserExtEntityListener")
