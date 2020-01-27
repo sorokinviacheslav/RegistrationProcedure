@@ -4,6 +4,7 @@ import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.web.screens.organization.OrganizationEdit;
 import com.haulmont.cuba.core.app.DataService;
+import com.haulmont.cuba.core.app.PersistenceManagerService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.ScreenBuilders;
