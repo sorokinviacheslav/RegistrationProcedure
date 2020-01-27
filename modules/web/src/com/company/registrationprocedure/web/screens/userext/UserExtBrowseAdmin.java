@@ -1,14 +1,12 @@
 package com.company.registrationprocedure.web.screens.userext;
 
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.actions.list.EditAction;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.entity.UserExt;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 @UiController("registrationprocedure_UserExtAdmin.browse")
 @UiDescriptor("user-ext-browse-admin.xml")
