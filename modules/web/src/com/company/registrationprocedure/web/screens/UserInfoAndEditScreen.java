@@ -2,6 +2,7 @@ package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.service.RegistrationService;
 import com.company.registrationprocedure.web.screens.organization.OrganizationEdit;
 import com.haulmont.cuba.core.app.DataService;
 import com.haulmont.cuba.core.app.PersistenceManagerService;
@@ -50,6 +51,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
     private Button editAccountButton;
     @Inject
     private PickerField<Organization> orgPickerField;
+    @Inject
+    private Button changeEmailButton;
 
     private UUID userId =null;
     private boolean editMode = false;
@@ -60,6 +63,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
     private ScreenBuilders screenBuilders;
     @Inject
     private Screens screens;
+    @Inject
+    private RegistrationService registrationService;
 
     public void setUserId(UUID id) {
         this.userId = id;
@@ -73,6 +78,13 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
         this.editMode = editMode;
         return isEditMode();
     }
+
+    @Subscribe("changeEmailButton")
+    public void onChangeEmailButtonClick(Button.ClickEvent event) {
+        registrationService.restoreOldValues(userExtDc.getItem().getId(),"email");
+    }
+    
+    
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
@@ -91,6 +103,8 @@ public class UserInfoAndEditScreen extends AbstractUserViewScreen {
     public void onBackButtonClick(Button.ClickEvent event) {
         close(Screen.WINDOW_DISCARD_AND_CLOSE_ACTION);
     }
+
+
 
     @Subscribe("editAccountButton")
     public void onEditAccountButtonClick(Button.ClickEvent event) {

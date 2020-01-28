@@ -8,9 +8,8 @@ import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.app.EmailService;
 import com.haulmont.cuba.core.global.*;
-import com.haulmont.cuba.security.entity.Group;
-import com.haulmont.cuba.security.entity.Role;
-import com.haulmont.cuba.security.entity.UserRole;
+import com.haulmont.cuba.security.app.EntityLog;
+import com.haulmont.cuba.security.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,6 +89,18 @@ public class RegistrationServiceBean implements RegistrationService {
         );
         emailService.sendEmailAsync(emailInfo);
         return new RegistrationResult(user);
+    }
+
+    @Override
+    @Transactional
+    public void restoreOldValues(UUID id, String... atrNames) {
+        EntityManager em = persistence.getEntityManager();
+        if(atrNames==null||atrNames.length==0) return;
+        UserExt user = em.find(UserExt.class,id);
+        EntityLogItem le = (EntityLogItem)em.createQuery(
+                "select e from sec$EntityLog e where e.entityInstanceName = :name")
+                .setParameter("name",user.getInstanceName()).getFirstResult();
+        //if(le!=null) user.setStatus(UserStatus.DEACTIVATED);
     }
 
     @Override

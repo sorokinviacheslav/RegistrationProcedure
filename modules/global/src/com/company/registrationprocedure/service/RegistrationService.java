@@ -12,6 +12,8 @@ public interface RegistrationService {
 
     RegistrationResult registerUser(RegistrationData regData);
 
+    void restoreOldValues(UUID id,String...atrNames);
+
     boolean userExists(String login,String email);
 
     class RegistrationResult implements Serializable {
