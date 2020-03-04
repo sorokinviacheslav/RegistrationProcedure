@@ -1,9 +1,6 @@
 package com.company.registrationprocedure.service;
 
-import com.company.registrationprocedure.entity.Organization;
-import com.company.registrationprocedure.entity.RoleExt;
-import com.company.registrationprocedure.entity.UserExt;
-import com.company.registrationprocedure.entity.UserStatus;
+import com.company.registrationprocedure.entity.*;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.app.EmailService;
@@ -43,51 +40,34 @@ public class RegistrationServiceBean implements RegistrationService {
 
     @Override
     @Transactional
-    public RegistrationResult registerUser(RegistrationData regData) {
+    public RegistrationResult registerUser(UserExt user,Organization org) {
         EntityManager em = persistence.getEntityManager();
-        if(isUserExists(regData.getLogin(),regData.getEmail(),em)) return new RegistrationResult(null);
-        if(!isOrganizationExists(regData.getOrganizationUUID(),em)) return new RegistrationResult(null);
+        if(isUserExists(user,em)) return new RegistrationResult(null);
+        if(!isOrganizationExists(org.getId(),em)) {
+            em.persist(org);
+            user.setOrganization(org);
+        }
         // Load group and role to be assigned to the new user
         Group group = em.find(Group.class,UUID.fromString(COMPANY_GROUP_ID));
-        //Role role =em.find(Role.class,UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
-        Organization org = em.find(Organization.class,regData.getOrganizationUUID());
+        //Organization org = em.find(Organization.class,user.getOrganization().getId());
 
-        // Create a user instance
-        UserExt user = metadata.create(UserExt.class);
-        user.setLogin(regData.getLogin());
-        user.setPassword(passwordEncryption.getPasswordHash(user.getId(), regData.getPassword()));
-        user.setEmail(regData.getEmail());
-        user.setStatus(UserStatus.NEW);
-        user.setHideEmail(regData.isHideEmail());
-        user.setOrganization(org);
-        user.setPhoneNumber(regData.getPhoneNumber());
-        user.setRecieveEmailNotifications(regData.isEmailNotifications());
-        user.setFirstName(regData.getFirstName());
-        user.setLastName(regData.getLastName());
-        user.setMiddleName(regData.getMiddleName());
-        user.setSystemRole(regData.getRole());
-
-        // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
+       // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
         user.setGroup(group);
-
+        user.setStatus(UserStatus.NEW);
+        user.setSystemRole(UserSystemRole.ACCESS_ADMINISTRATOR);
         /* Create a link to the role
          * Here we programmatically set the default role.
          * Another way is to set the default role by using the DB scripts. Set IS_DEFAULT_ROLE parameter to true in the insert script for the role.
          * Also, this parameter might be changed in the Role Editor screen.
          */
-        /*UserRole userRole = metadata.create(UserRole.class);
-        userRole.setUser(user);
-        userRole.setRole(role);*/
-
         // Save new entities
         em.persist(user);
-        //em.persist(userRole);
-        EmailInfo emailInfo = new EmailInfo(
+        /*EmailInfo emailInfo = new EmailInfo(
                 user.getEmail(), // recipients
                 "Activate your account",
                 "http://localhost:8080/app/#activate?value=" + user.getId()
         );
-        emailService.sendEmailAsync(emailInfo);
+        emailService.sendEmailAsync(emailInfo);*/
         return new RegistrationResult(user);
     }
 
@@ -105,15 +85,15 @@ public class RegistrationServiceBean implements RegistrationService {
 
     @Override
     @Transactional
-    public boolean userExists(String login, String email) {
+    public boolean userExists(UserExt user) {
         EntityManager em = persistence.getEntityManager();
-        return isUserExists(login,email,em);
+        return isUserExists(user,em);
     }
 
-    private boolean isUserExists(String login,String email,EntityManager em) {
+    private boolean isUserExists(UserExt user,EntityManager em) {
         int existing = em.createQuery(
                 "select u from sec$User u where u.loginLowerCase = :login or u.email = :email")
-                        .setParameter("login", login).setParameter("email",email).getResultList().size();
+                        .setParameter("login", user.getLogin()).setParameter("email",user.getEmail()).getResultList().size();
         return !(existing < 1);
     }
 

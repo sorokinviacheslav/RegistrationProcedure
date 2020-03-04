@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd"
-        extends="com/company/registrationprocedure/web/screens/abstract-user-view-screen.xml">
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
     <data>
+        <instance id="userExtDc" class="com.company.registrationprocedure.entity.UserExt" view="userExt-view_9">
+            <loader id="userExtDl"/>
+            <instance id="organizationDc" property="organization"/>
+        </instance>
         <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization"
                     view="organization-view">
             <loader id="organizationsDl" dynamicAttributes="true">
@@ -12,23 +15,48 @@
             </loader>
         </collection>
     </data>
+    <actions>
+        <action id="next" caption="Next"/>
+        <action id="back" caption="Back"/>
+    </actions>
     <layout>
         <form>
             <column>
-                <passwordField id="passwordField" caption="Password" required="true" ext:index="1"/>
-                <passwordField id="passwordConfirmField" caption="repeatPassword" required="true" ext:index="2"/>
-                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc" required="true"
-                                   filterMode="NO" caption="Organization" captionProperty="name">
-                    <actions>
-                        <action id="lookup" type="picker_lookup"/>
-                        <action id="open" type="picker_open"/>
-                    </actions>
-                </lookupPickerField>
                 <buttonsPanel>
                     <button id="register" caption="Register"/>
                     <button id="cancel" caption="Cancel"/>
                 </buttonsPanel>
             </column>
         </form>
+        <tabSheet id="tabSheet">
+            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0">
+                <fragment id="fragment" screen="registrationprocedure_UserExtFragment">
+                </fragment>
+                <buttonsPanel>
+                    <button action="back"/>
+                    <button action="next"/>
+                </buttonsPanel>
+            </tab>
+            <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1">
+                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
+                                   filterMode="NO" caption="Organization" captionProperty="name" dataContainer="userExtDc" property="organization">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                    </actions>
+                </lookupPickerField>
+                <fragment id="fragment_1" screen="registrationprocedure_OrganizationFragment"/>
+                <buttonsPanel>
+                    <button action="back"/>
+                    <button action="next"/>
+                </buttonsPanel>
+            </tab>
+            <tab caption="System Roles" margin="true,false,false,false" spacing="true" id="2">
+                <buttonsPanel>
+                    <button action="back"/>
+                    <button action="next"/>
+                </buttonsPanel>
+            </tab>
+        </tabSheet>
     </layout>
 </window>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://editorCaption"
+        focusComponent="fragment"
+        messagesPack="com.company.registrationprocedure.web.screens">
+    <data>
+        <instance id="userExtDc"
+                  class="com.company.registrationprocedure.entity.UserExt"
+                  view="userExt-view_7">
+            <loader id="userExtDl"/>
+            <instance id="organizationDc" property="organization"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="fragment" spacing="true">
+        <fragment id="fragment" screen="registrationprocedure_UserExtFragment"/>
+        <lookupField id="orgLookup" dataContainer="userExtDc" property="organization" editable="false" enable="false"></lookupField>
+        <fragment id="fragment_1" screen="registrationprocedure_OrganizationFragment"/>
+        <buttonsPanel>
+            <button id="editAccountButton" caption="Edit Profile"/>
+            <button id="backButton" caption="Back"/>
+        </buttonsPanel>
+    </layout>
+</window>

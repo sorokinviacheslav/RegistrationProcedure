@@ -1,6 +1,7 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.entity.UserSystemRole;
 import com.haulmont.cuba.security.entity.User;
 
@@ -10,11 +11,11 @@ import java.util.UUID;
 public interface RegistrationService {
     String NAME = "registrationprocedure_RegistrationService";
 
-    RegistrationResult registerUser(RegistrationData regData);
+    RegistrationResult registerUser(UserExt user,Organization org);
 
     void restoreOldValues(UUID id,String...atrNames);
 
-    boolean userExists(String login,String email);
+    boolean userExists(UserExt user);
 
     class RegistrationResult implements Serializable {
 

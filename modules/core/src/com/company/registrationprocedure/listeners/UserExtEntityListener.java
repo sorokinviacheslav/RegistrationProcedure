@@ -49,6 +49,9 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
     }
 
     private void setRestrictedRole(UserExt user,EntityManager em) {
+        if(user.getLogin().equalsIgnoreCase("admin")) {
+            return;
+        }
         List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
                 "r.user = :user ").setParameter("user",user).getResultList();
         RoleExt role = em.find(RoleExt.class, UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));

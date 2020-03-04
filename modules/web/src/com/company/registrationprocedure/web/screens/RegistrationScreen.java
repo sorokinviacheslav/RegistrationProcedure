@@ -1,14 +1,17 @@
 package com.company.registrationprocedure.web.screens;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.OrganizationRole;
+import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.entity.UserSystemRole;
 import com.company.registrationprocedure.service.RegistrationService;
+import com.company.registrationprocedure.web.screens.organization.OrganizationFragment;
+import com.company.registrationprocedure.web.screens.userext.UserExtFragment;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.model.CollectionContainer;
-import com.haulmont.cuba.gui.model.CollectionLoader;
+import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.registrationprocedure.web.screens.AbstractUserViewScreen;
 
@@ -19,7 +22,9 @@ import java.util.function.BiFunction;
 
 @UiController("registrationprocedure_RegistrationScreen")
 @UiDescriptor("registration-screen.xml")
-public class RegistrationScreen extends AbstractUserViewScreen {
+@EditedEntityContainer("userExtDc")
+@LoadDataBeforeShow
+public class RegistrationScreen extends StandardEditor<UserExt> {
 
     @Inject
     private RegistrationService registrationService;
@@ -28,38 +33,46 @@ public class RegistrationScreen extends AbstractUserViewScreen {
     @Inject
     private Messages messages;
     @Inject
-    private PasswordField passwordField;
-    @Inject
-    private MaskedField<String> phoneField;
-    @Inject
-    private PasswordField passwordConfirmField;
-    @Inject
-    private TextField<String> login;
-    @Inject
-    private TextField<String> emailField;
-    @Inject
-    private TextField<String> middleNameField;
-    @Inject
-    private TextField<String> lastNameField;
-    @Inject
-    private CheckBox hideEmail;
-    @Inject
-    private TextField<String> firstNameField;
-    @Inject
-    private CheckBox emailNotificationsCheckBox;
-    @Inject
     private LookupPickerField<Organization> organizationLookupPickerField;
-
+    @Inject
+    private UserExtFragment fragment;
+    @Inject
+    private OrganizationFragment fragment_1;
     @Inject
     private CollectionContainer<Organization> organizationsDc;
     @Inject
-    private CollectionLoader<Organization> organizationsDl;
+    private TabSheet tabSheet;
+    @Inject
+    private InstancePropertyContainer<Organization> organizationDc;
+    @Inject
+    private Metadata metadata;
+
+    @Subscribe("organizationLookupPickerField")
+    public void onOrganizationLookupPickerFieldValueChange(HasValue.ValueChangeEvent<Organization> event) {
+        fragment_1.setAllElementsEditable(event.getValue()==null);
+    }
+
+
+
+    @Subscribe("back")
+    public void onBack(Action.ActionPerformedEvent event) {
+        int currentTab = Integer.parseInt(tabSheet.getSelectedTab().getName());
+        if(currentTab>0) {
+            tabSheet.setSelectedTab(String.valueOf(currentTab-1));
+        }
+    }
+
+    @Subscribe("next")
+    public void onNext(Action.ActionPerformedEvent event) {
+        int maxTabs=tabSheet.getTabs().size();
+        int currentTab = Integer.parseInt(tabSheet.getSelectedTab().getName());
+        if(currentTab<(maxTabs-1)) {
+            tabSheet.setSelectedTab(String.valueOf(currentTab+1));
+        }
+    }
 
     @Subscribe
     public void onInit(InitEvent event) {
-        organizationsDl.load();
-        organizationLookupPickerField.setOptionsList(organizationsDc.getItems());
-        organizationLookupPickerField.setPageLength(10);
         BiFunction<String, String, Boolean> predicate = String::contains;
         /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
                 predicate.apply(itemCaption.toLowerCase(), searchString));*/
@@ -81,23 +94,11 @@ public class RegistrationScreen extends AbstractUserViewScreen {
 
     @Subscribe("register")
     public void onRegisterClick(Button.ClickEvent event) {
-        if(!validateAllWithMessages()) return;
-        if(!passwordField.getValue().equals(passwordConfirmField.getValue())) {
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption("Passwords don't match!")
-                    .show();
-            return;
-        }
-        RegistrationService.RegistrationData regData = new RegistrationService.RegistrationData(login.getValue(),passwordField.getValue(),emailField.getValue(),false);
-        regData.setFirstName(firstNameField.getValue());
-        regData.setLastName(lastNameField.getValue());
-        regData.setMiddleName(middleNameField.getValue());
-        regData.setPhoneNumber(phoneField.getValue());
-        regData.setEmailNotifications(emailNotificationsCheckBox.getValue());
-        regData.setHideEmail(hideEmail.getValue());
-        regData.setOrganizationUUID(organizationLookupPickerField.getValue().getId());
-        regData.setRole(UserSystemRole.ACCESS_ADMINISTRATOR);
-        RegistrationService.RegistrationResult result =registrationService.registerUser(regData);
+        if(!fragment.validateAllWithMessages()) return;
+        if(!fragment_1.validateAllWithMessages()) return;
+        Organization org = fragment_1.getOrganization();
+        org.setRole(OrganizationRole.ADMINISTRATIVE);
+        RegistrationService.RegistrationResult result =registrationService.registerUser(getEditedEntity(),org);
         if(!result.isSuccess()) {
             notifications.create(Notifications.NotificationType.TRAY)
                     .withCaption(
@@ -108,19 +109,19 @@ public class RegistrationScreen extends AbstractUserViewScreen {
         notifications.create(Notifications.NotificationType.TRAY)
                 .withCaption("Created user " + getLogin())
                 .show();
-        close(WINDOW_COMMIT_AND_CLOSE_ACTION);
+        close(WINDOW_DISCARD_AND_CLOSE_ACTION);
     }
 
     @Subscribe("cancel")
     public void onCancelClick(Button.ClickEvent event) {
-        close(Screen.WINDOW_DISCARD_AND_CLOSE_ACTION);
+        close(WINDOW_DISCARD_AND_CLOSE_ACTION);
     }
     
     public String getPassword() {
-        return passwordField.getValue();
+        return getEditedEntity().getPassword();
     }
 
     public String getLogin() {
-        return login.getValue();
+        return getEditedEntity().getLogin();
     }
 }

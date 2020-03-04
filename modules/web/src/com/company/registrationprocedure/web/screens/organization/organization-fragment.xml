@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
+    <data>
+        <instance id="organizationDc"
+                  class="com.company.registrationprocedure.entity.Organization"
+                  view="organization-view_1"
+        provided="true">
+            <loader/>
+        </instance>
+    </data>
+    <layout>
+        <form dataContainer="organizationDc">
+            <column>
+                <textField id="innField" required="true" property="inn"></textField>
+                <textField id="nameField" required="true" property="name"></textField>
+                <textField id="emailField" required="true"
+                           textChangeTimeout="400" caption="Email" property="email">
+                    <validators>
+                        <email message="msg://emailWrongCaption"/>
+                    </validators>
+                </textField>
+            </column>
+        </form>
+    </layout>
+</fragment>
+

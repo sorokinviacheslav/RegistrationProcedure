@@ -48,7 +48,11 @@
         <property name="attributes" view="_minimal"/>
     </view>
     <view entity="registrationprocedure_UserExt" name="userExt-view_7" extends="_local">
-        <property name="organization" view="_minimal"/>
+        <property name="organization" view="_minimal">
+            <property name="role"/>
+            <property name="email"/>
+            <property name="inn"/>
+        </property>
     </view>
     <view entity="registrationprocedure_Organization" name="organization-view_1" extends="_local"/>
     <view entity="registrationprocedure_UserExt" name="userExt-view_8" extends="_minimal">

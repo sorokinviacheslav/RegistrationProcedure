@@ -29,6 +29,8 @@ public class ExtLoginScreen extends LoginScreen {
 
     @Inject
     private DataManager dataManager;
+    @Inject
+    private Metadata metadata;
 
     @Override
     protected void doLogin(Credentials cr) throws LoginException {
@@ -61,7 +63,7 @@ public class ExtLoginScreen extends LoginScreen {
     @Subscribe("registerButton")
     public void onRegisterButtonClick(Button.ClickEvent event) {
         RegistrationScreen registerScreen = screens.create(RegistrationScreen.class, OpenMode.DIALOG);
-
+        registerScreen.setEntityToEdit(metadata.create(UserExt.class));
         // Add a listener to be notified when the "Register" screen is closed with COMMIT_ACTION_ID
         registerScreen.addAfterCloseListener(afterCloseEvent -> {
             CloseAction closeAction = afterCloseEvent.getCloseAction();

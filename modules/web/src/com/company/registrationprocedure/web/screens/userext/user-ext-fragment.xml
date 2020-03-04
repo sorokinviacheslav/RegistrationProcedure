@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
+    <data>
+        <instance id="userExtDc"
+                  class="com.company.registrationprocedure.entity.UserExt"
+                  view="userExt-view_5"
+                  provided="true">
+            <loader/>
+        </instance>
+    </data>
+    <layout expand="form">
+        <form id="form" dataContainer="userExtDc">
+            <column>
+                <textField id="login" required="true" caption="Login" property="login">
+                </textField>
+                <textField id="emailField" required="true"
+                           textChangeTimeout="400" caption="Email" property="email">
+                    <validators>
+                        <email message="msg://emailWrongCaption"/>
+                    </validators>
+                </textField>
+                <passwordField id="passwordField" caption="Password" required="true"/>
+                <passwordField id="passwordConfirmField" caption="repeatPassword" required="true"/>
+                <textField id="firstNameField" caption="First Name" required="true" property="firstName"/>
+                <textField id="lastNameField" caption="Last Name" required="true" property="lastName"/>
+                <textField id="middleNameField" caption="Middle Name" required="true" property="middleName"/>
+                <maskedField id="phoneField" caption="Phone Number" valueMode="masked" mask="+7(###)###-##-##"
+                             required="true" property="phoneNumber"/>
+                <checkBox id="emailNotificationsCheckBox" caption="Email Notifications" property="recieveEmailNotifications"/>
+                <checkBox id="hideEmail" caption="Hide Email" property="hideEmail"/>
+            </column>
+        </form>
+    </layout>
+</fragment>
+
