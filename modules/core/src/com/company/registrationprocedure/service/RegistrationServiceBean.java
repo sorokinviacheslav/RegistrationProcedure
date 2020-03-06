@@ -55,7 +55,6 @@ public class RegistrationServiceBean implements RegistrationService {
        // Note that the platform does not support the default group out of the box, so here we define the default group id and set it for the newly registered users.
         user.setGroup(group);
         user.setStatus(UserStatus.NEW);
-        user.setSystemRole(UserSystemRole.ACCESS_ADMINISTRATOR);
         em.persist(user);
         for(RoleExt role:roles) {
             UserRole uRole = metadata.create(UserRole.class);

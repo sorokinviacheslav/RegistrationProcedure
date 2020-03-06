@@ -23,14 +23,14 @@
         </collection>
     </data>
     <actions>
-        <action id="next" caption="Next"/>
-        <action id="back" caption="Back"/>
-        <action id="register" caption="Register"/>
-        <action id="cancel" caption="Cancel"/>
+        <action id="next" caption="Далее"/>
+        <action id="back" caption="Назад"/>
+        <action id="register" caption="Регистрация"/>
+        <action id="cancel" caption="Закрыть"/>
     </actions>
     <layout>
         <tabSheet id="tabSheet">
-            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0" expand="fragment">
+            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0" expand="userFragment">
                 <fragment id="userFragment" screen="registrationprocedure_UserExtFragment">
                 </fragment>
                 <buttonsPanel>
@@ -39,7 +39,7 @@
                 </buttonsPanel>
             </tab>
             <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1" enable="false"
-                 expand="fragment_1">
+                 expand="organizationFragment">
                 <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
                                    filterMode="NO" caption="Organization" captionProperty="name" dataContainer="userExtDc" property="organization">
                     <actions>

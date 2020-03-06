@@ -17,10 +17,6 @@ public class UserExt extends User {
     protected String domainLogin;
 
     @NotNull
-    @Column(name = "ROLE", nullable = false)
-    protected Integer systemRole;
-
-    @NotNull
     @Column(name = "STATUS", nullable = false)
     protected Integer status;
 
@@ -44,14 +40,6 @@ public class UserExt extends User {
 
     @Column(name = "COMMENTS", length = 1000)
     protected String comments;
-
-    public UserSystemRole getSystemRole() {
-        return systemRole == null ? null : UserSystemRole.fromId(systemRole);
-    }
-
-    public void setSystemRole(UserSystemRole systemRole) {
-        this.systemRole = systemRole == null ? null : systemRole.getId();
-    }
 
     public void setStatus(UserStatus status) {
         this.status = status == null ? null : status.getId();

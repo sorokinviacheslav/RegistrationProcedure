@@ -1,7 +1,5 @@
 package com.company.registrationprocedure.web.screens.roleext;
 
-import com.company.registrationprocedure.entity.UserExt;
-import com.company.registrationprocedure.web.screens.userext.UserExtEditAdmin;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.GroupTable;

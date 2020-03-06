@@ -38,7 +38,6 @@
                 <column id="lastName"/>
                 <column id="middleName"/>
                 <column id="email"/>
-                <column id="systemRole"/>
                 <column id="status"/>
                 <column id="phoneNumber"/>
                 <column id="recieveEmailNotifications"/>

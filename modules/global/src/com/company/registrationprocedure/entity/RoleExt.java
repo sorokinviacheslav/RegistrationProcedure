@@ -20,14 +20,6 @@ public class RoleExt extends Role {
     @Column(name = "USER_ROLE", nullable = false)
     protected Integer userRole;
 
-    public UserSystemRole getUserRole() {
-        return userRole == null ? null : UserSystemRole.fromId(userRole);
-    }
-
-    public void setUserRole(UserSystemRole userRole) {
-        this.userRole = userRole == null ? null : userRole.getId();
-    }
-
     public OrganizationRole getOrganizationRole() {
         return organizationRole == null ? null : OrganizationRole.fromId(organizationRole);
     }

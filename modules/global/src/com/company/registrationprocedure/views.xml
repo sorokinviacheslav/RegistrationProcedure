@@ -25,7 +25,6 @@
         <property name="middleName"/>
     </view>
     <view entity="registrationprocedure_UserExt" name="userExt-view_6" extends="_minimal">
-        <property name="systemRole"/>
         <property name="status"/>
         <property name="phoneNumber"/>
         <property name="recieveEmailNotifications"/>
@@ -59,7 +58,6 @@
     <view entity="registrationprocedure_Organization" name="organization-view_1" extends="_local"/>
     <view entity="registrationprocedure_UserExt" name="userExt-view_8" extends="_minimal">
         <property name="domainLogin"/>
-        <property name="systemRole"/>
         <property name="status"/>
         <property name="phoneNumber"/>
         <property name="organization" view="_minimal"/>

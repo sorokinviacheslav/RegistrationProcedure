@@ -11,7 +11,6 @@ import com.haulmont.cuba.gui.screen.UiDescriptor;
 import javax.inject.Inject;
 
 @UiController("registrationprocedure_MyScreenFragment")
-@UiDescriptor("new-fragment.xml")
 public class MyScreenFragment extends ScreenFragment {
 
     @Inject

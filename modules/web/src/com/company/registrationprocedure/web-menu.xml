@@ -6,6 +6,5 @@
         <item screen="registrationprocedure_UserExt.browse"/>
         <item screen="registrationprocedure_RoleExt.browse"/>
         <item screen="sec$EntityLog.browse"/>
-        <item screen="registrationprocedure_UserExtAdmin.browse"/>
     </menu>
 </menu-config>
