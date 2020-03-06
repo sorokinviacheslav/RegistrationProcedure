@@ -1,17 +1,20 @@
 package com.company.registrationprocedure.service;
 
 import com.company.registrationprocedure.entity.Organization;
+import com.company.registrationprocedure.entity.RoleExt;
 import com.company.registrationprocedure.entity.UserExt;
 import com.company.registrationprocedure.entity.UserSystemRole;
 import com.haulmont.cuba.security.entity.User;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface RegistrationService {
     String NAME = "registrationprocedure_RegistrationService";
 
-    RegistrationResult registerUser(UserExt user,Organization org);
+    RegistrationResult registerUser(UserExt user, Organization org, Collection<RoleExt> roles);
 
     void restoreOldValues(UUID id,String...atrNames);
 

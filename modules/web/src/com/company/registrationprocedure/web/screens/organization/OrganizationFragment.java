@@ -30,9 +30,7 @@ public class OrganizationFragment extends MyScreenFragment {
     @Inject
     private TextField<String> emailField;
     @Inject
-    private ScreenValidation screenValidation;
-    @Inject
-    private Notifications notifications;
+    private TextField<String> kppField;
 
     public Organization getOrganization() {
         if(organizationDc.getItemOrNull()!=null) {
@@ -42,6 +40,7 @@ public class OrganizationFragment extends MyScreenFragment {
         org.setInn(innField.getValue());
         org.setName(nameField.getValue());
         org.setEmail(emailField.getValue());
+        org.setKpp(kppField.getValue());
         return org;
     }
 }

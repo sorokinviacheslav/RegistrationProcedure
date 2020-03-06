@@ -12,6 +12,7 @@
         <form dataContainer="organizationDc">
             <column>
                 <textField id="innField" required="true" property="inn"></textField>
+                <textField id="kppField" required="true" property="kpp"></textField>
                 <textField id="nameField" required="true" property="name"></textField>
                 <textField id="emailField" required="true"
                            textChangeTimeout="400" caption="Email" property="email">
@@ -19,6 +20,7 @@
                         <email message="msg://emailWrongCaption"/>
                     </validators>
                 </textField>
+                <lookupField id="roleField" required="true" property="role" optionsEnum="com.company.registrationprocedure.entity.OrganizationRole"></lookupField>
             </column>
         </form>
     </layout>

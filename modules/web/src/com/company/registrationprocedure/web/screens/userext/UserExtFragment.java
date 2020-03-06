@@ -26,11 +26,13 @@ public class UserExtFragment extends MyScreenFragment {
 
     @Override
     public boolean validateAllWithMessages() {
+       if(!super.validateAllWithMessages()) return false;
         if(!passwordField.getValue().equals(passwordConfirmField.getValue())) {
             notifications.create(Notifications.NotificationType.TRAY)
                     .withCaption("Passwords don't match!")
                     .show();
+            return false;
         }
-        return super.validateAllWithMessages();
+        return true;
     }
 }

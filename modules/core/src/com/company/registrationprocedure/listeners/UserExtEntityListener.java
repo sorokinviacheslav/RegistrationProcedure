@@ -43,7 +43,7 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
         }
         else {
             //Main role assignment happens here
-            setProperRoles(user,em);
+            removeRestrictedRole(user,em);
             user.setActive(true);
         }
     }
@@ -56,42 +56,26 @@ public class UserExtEntityListener implements BeforeInsertEntityListener<UserExt
                 "r.user = :user ").setParameter("user",user).getResultList();
         RoleExt role = em.find(RoleExt.class, UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
         //TO DO try to use Set instead of this check and use seUserRoles for User
-        boolean hasRestrictedRole = false;
         for(UserRole ur: currentUserRoles) {
-            if(!ur.getRole().equals(role)) {
-                em.remove(ur);
-            }
-            else {
-                hasRestrictedRole = true;
+            if(ur.getRole().equals(role)) {
+                return;
             }
         }
-        if(!hasRestrictedRole) {
-            UserRole userRole = metadata.create(UserRole.class);
-            userRole.setUser(user);
-            userRole.setRole(role);
-            em.persist(userRole);
-        }
+        UserRole userRole = metadata.create(UserRole.class);
+        userRole.setUser(user);
+        userRole.setRole(role);
+        em.persist(userRole);
     }
 
-    private void setProperRoles(UserExt user,EntityManager em) {
-        if(user.getLogin().equalsIgnoreCase("admin")) {
-            return;
-        }
-        List<UserRole> currentRoles = em.createQuery("select r from sec$UserRole r where " +
+    private void removeRestrictedRole(UserExt user,EntityManager em) {
+        List<UserRole> currentUserRoles = em.createQuery("select r from sec$UserRole r where " +
                 "r.user = :user ").setParameter("user",user).getResultList();
-        List<RoleExt> newRoles = em.createQuery("select r from registrationprocedure_RoleExt r where " +
-                "r.organizationRole = :org "+"and r.userRole = :user ").setParameter("org",user.getOrganization().getRole()).setParameter("user",user.getSystemRole()).getResultList();
-        for(UserRole currentRole :currentRoles) {
-            if(!newRoles.contains(currentRole.getRole())) {
-                em.remove(currentRole);
-            }
-        }
-        for(RoleExt newRole: newRoles) {
-            if(!currentRoles.stream().anyMatch(r->r.getRole().equals(newRole))) {
-                UserRole userRole = metadata.create(UserRole.class);
-                userRole.setUser(user);
-                userRole.setRole(newRole);
-                em.persist(userRole);
+        RoleExt role = em.find(RoleExt.class, UUID.fromString("4a07a346-19b1-89b0-c43f-f15221196bfd"));
+        //TO DO try to use Set instead of this check and use seUserRoles for User
+        boolean hasRestrictedRole = false;
+        for(UserRole ur: currentUserRoles) {
+            if(ur.getRole().equals(role)) {
+                em.remove(ur);
             }
         }
 

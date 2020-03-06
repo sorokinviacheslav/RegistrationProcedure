@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd">
+    <data>
+        <collection id="roleExtsDc" class="com.company.registrationprocedure.entity.RoleExt" view="roleExt-view" provided="true">
+            <loader id="roleExtsDl">
+                <query>
+                    <![CDATA[select e from registrationprocedure_RoleExt e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <twinColumn id="twinColumn" caption="Select Roles"
+                    captionProperty="userRole" rows="0" editable="true"
+                    optionsContainer="roleExtsDc"/>
+    </layout>
+</fragment>
+

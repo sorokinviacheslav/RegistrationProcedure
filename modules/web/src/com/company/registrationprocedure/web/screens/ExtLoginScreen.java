@@ -62,7 +62,7 @@ public class ExtLoginScreen extends LoginScreen {
 
     @Subscribe("registerButton")
     public void onRegisterButtonClick(Button.ClickEvent event) {
-        RegistrationScreen registerScreen = screens.create(RegistrationScreen.class, OpenMode.DIALOG);
+        RegistrationScreen registerScreen = screens.create(RegistrationScreen.class, OpenMode.ROOT);
         registerScreen.setEntityToEdit(metadata.create(UserExt.class));
         // Add a listener to be notified when the "Register" screen is closed with COMMIT_ACTION_ID
         registerScreen.addAfterCloseListener(afterCloseEvent -> {
@@ -75,7 +75,6 @@ public class ExtLoginScreen extends LoginScreen {
                 loginButton.focus();
             }
         });
-
         // Show "Register" screen
         registerScreen.show();
     }

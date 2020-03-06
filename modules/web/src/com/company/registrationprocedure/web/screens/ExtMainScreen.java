@@ -3,6 +3,7 @@ package com.company.registrationprocedure.web.screens;
 import com.company.registrationprocedure.entity.UserExt;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.SizeUnit;
@@ -39,6 +40,8 @@ public class ExtMainScreen extends MainScreen implements Window.HasFoldersPane {
     private UserSessionSource userSessionSource;
     @Inject
     private Metadata metadata;
+    @Inject
+    private ScreenBuilders screenBuilders;
 
     public ExtMainScreen() {
         addInitListener(this::initLayout);

@@ -41,6 +41,7 @@
         <property name="role"/>
         <property name="email"/>
         <property name="inn"/>
+        <property name="kpp"/>
     </view>
     <view entity="sec$EntityLog" name="entityLogItem-view" extends="_local">
         <property name="user" view="_minimal"/>
@@ -52,6 +53,7 @@
             <property name="role"/>
             <property name="email"/>
             <property name="inn"/>
+            <property name="kpp"/>
         </property>
     </view>
     <view entity="registrationprocedure_Organization" name="organization-view_1" extends="_local"/>

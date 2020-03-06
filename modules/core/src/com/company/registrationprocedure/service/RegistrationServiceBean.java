@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class RegistrationServiceBean implements RegistrationService {
 
     @Override
     @Transactional
-    public RegistrationResult registerUser(UserExt user,Organization org) {
+    public RegistrationResult registerUser(UserExt user,Organization org, Collection<RoleExt> roles) {
         EntityManager em = persistence.getEntityManager();
         if(isUserExists(user,em)) return new RegistrationResult(null);
         if(!isOrganizationExists(org.getId(),em)) {
@@ -55,13 +56,13 @@ public class RegistrationServiceBean implements RegistrationService {
         user.setGroup(group);
         user.setStatus(UserStatus.NEW);
         user.setSystemRole(UserSystemRole.ACCESS_ADMINISTRATOR);
-        /* Create a link to the role
-         * Here we programmatically set the default role.
-         * Another way is to set the default role by using the DB scripts. Set IS_DEFAULT_ROLE parameter to true in the insert script for the role.
-         * Also, this parameter might be changed in the Role Editor screen.
-         */
-        // Save new entities
         em.persist(user);
+        for(RoleExt role:roles) {
+            UserRole uRole = metadata.create(UserRole.class);
+            uRole.setRole(role);
+            uRole.setUser(user);
+            em.persist(uRole);
+        }
         /*EmailInfo emailInfo = new EmailInfo(
                 user.getEmail(), // recipients
                 "Activate your account",

@@ -1,0 +1,1 @@
+alter table REGISTRATIONPROCEDURE_ORGANIZATION add column SHORT_NAME varchar(255) ;

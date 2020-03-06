@@ -10,24 +10,42 @@
     </data>
     <layout expand="form">
         <form id="form" dataContainer="userExtDc">
+            <column width="250px">
+                <label value="Фамилия*:"/>
+                <label value="Имя*:"/>
+                <label value="Отчество*:"/>
+                <label value="Электронная почта*:"/>
+                <label value="Логин*:"/>
+                <label value="Доменный логин*:"/>
+                <label value="Доменный пароль*:"/>
+                <label value="Пароль*:"/>
+                <label value="Подтверждение пароля*:"/>
+                <label value="Мобильный телефон*:"/>
+                <label value="Адрес*:"/>
+                <label value="Должность*:"/>
+                <label value="Уведомления по email:"/>
+                <label value="Скрыть email:"/>
+            </column>
             <column>
-                <textField id="login" required="true" caption="Login" property="login">
-                </textField>
-                <textField id="emailField" required="true"
-                           textChangeTimeout="400" caption="Email" property="email">
+                <textField id="lastNameField" required="true" property="lastName" caption=""/>
+                <textField id="firstNameField" required="true" property="firstName" caption=""/>
+                <textField id="middleNameField" required="true" property="middleName" caption=""/>
+                <textField id="emailField" required="true" textChangeTimeout="400" property="email" caption="">
                     <validators>
                         <email message="msg://emailWrongCaption"/>
                     </validators>
                 </textField>
-                <passwordField id="passwordField" caption="Password" required="true"/>
-                <passwordField id="passwordConfirmField" caption="repeatPassword" required="true"/>
-                <textField id="firstNameField" caption="First Name" required="true" property="firstName"/>
-                <textField id="lastNameField" caption="Last Name" required="true" property="lastName"/>
-                <textField id="middleNameField" caption="Middle Name" required="true" property="middleName"/>
-                <maskedField id="phoneField" caption="Phone Number" valueMode="masked" mask="+7(###)###-##-##"
-                             required="true" property="phoneNumber"/>
-                <checkBox id="emailNotificationsCheckBox" caption="Email Notifications" property="recieveEmailNotifications"/>
-                <checkBox id="hideEmail" caption="Hide Email" property="hideEmail"/>
+                <textField id="login" required="true" property="login" caption=""/>
+                <textField id="domainLogin" property="domainLogin" caption=""/>
+                <textField id="domainPassword" caption=""/>
+                <passwordField id="passwordField" required="true" caption=""/>
+                <passwordField id="passwordConfirmField" required="true" caption=""/>
+                <maskedField id="phoneField" valueMode="masked" mask="+7(###)###-##-##"
+                             required="true" property="phoneNumber" caption=""/>
+                <textField id="address" caption=""/>
+                <textField id="position" caption=""/>
+                <checkBox id="emailNotificationsCheckBox" property="recieveEmailNotifications" caption=""/>
+                <checkBox id="hideEmail" property="hideEmail" caption=""/>
             </column>
         </form>
     </layout>

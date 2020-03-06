@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
     <data>
-        <instance id="userExtDc" class="com.company.registrationprocedure.entity.UserExt" view="userExt-view_9">
+        <instance id="userExtDc" class="com.company.registrationprocedure.entity.UserExt" view="userExt-view_7">
             <loader id="userExtDl"/>
             <instance id="organizationDc" property="organization"/>
         </instance>
@@ -14,30 +14,32 @@
                 </query>
             </loader>
         </collection>
+        <collection id="roleExtsDc" class="com.company.registrationprocedure.entity.RoleExt" view="roleExt-view">
+            <loader id="roleExtsDl">
+                <query>
+                    <![CDATA[select e from registrationprocedure_RoleExt e]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <actions>
         <action id="next" caption="Next"/>
         <action id="back" caption="Back"/>
+        <action id="register" caption="Register"/>
+        <action id="cancel" caption="Cancel"/>
     </actions>
     <layout>
-        <form>
-            <column>
-                <buttonsPanel>
-                    <button id="register" caption="Register"/>
-                    <button id="cancel" caption="Cancel"/>
-                </buttonsPanel>
-            </column>
-        </form>
         <tabSheet id="tabSheet">
-            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0">
-                <fragment id="fragment" screen="registrationprocedure_UserExtFragment">
+            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0" expand="fragment">
+                <fragment id="userFragment" screen="registrationprocedure_UserExtFragment">
                 </fragment>
                 <buttonsPanel>
-                    <button action="back"/>
+                    <button action="cancel"/>
                     <button action="next"/>
                 </buttonsPanel>
             </tab>
-            <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1">
+            <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1" enable="false"
+                 expand="fragment_1">
                 <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
                                    filterMode="NO" caption="Organization" captionProperty="name" dataContainer="userExtDc" property="organization">
                     <actions>
@@ -45,16 +47,19 @@
                         <action id="open" type="picker_open"/>
                     </actions>
                 </lookupPickerField>
-                <fragment id="fragment_1" screen="registrationprocedure_OrganizationFragment"/>
+                <fragment id="organizationFragment" screen="registrationprocedure_OrganizationFragment"/>
                 <buttonsPanel>
+                    <button action="cancel"/>
                     <button action="back"/>
                     <button action="next"/>
                 </buttonsPanel>
             </tab>
-            <tab caption="System Roles" margin="true,false,false,false" spacing="true" id="2">
+            <tab caption="System Roles" margin="true,false,false,false" spacing="true" enable="false" id="2">
+                <fragment id="roleFragment" screen="registrationprocedure_RoleExtFragment"/>
                 <buttonsPanel>
                     <button action="back"/>
-                    <button action="next"/>
+                    <button action="cancel"/>
+                    <button action="register"/>
                 </buttonsPanel>
             </tab>
         </tabSheet>

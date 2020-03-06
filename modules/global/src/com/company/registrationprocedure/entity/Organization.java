@@ -28,9 +28,31 @@ public class Organization extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     protected String name;
 
+    @Column(name = "SHORT_NAME")
+    protected String shortName;
+
     @NotNull
     @Column(name = "INN", nullable = false, unique = true, length = 20)
     protected String inn;
+
+    @Column(name = "KPP")
+    protected String kpp;
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getKpp() {
+        return kpp;
+    }
+
+    public void setKpp(String kpp) {
+        this.kpp = kpp;
+    }
 
     public String getEmail() {
         return email;
