@@ -70,9 +70,7 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
                                     Organization newOrg =metadata.create(Organization.class);
                                     newOrg.setInn(innField.getValue());
                                     newOrg.setKpp(kppField.getValue());
-                                    organizationDc.setItem(newOrg);
-                                    organizationFragment.getFragment().setVisible(true);
-                                    organizationFragment.setAllElementsEditable(true);
+                                    setOrganizationFragmentProperties(true,true,newOrg);
                                     newOrganization=true;
                                 }),
                                 new DialogAction(DialogAction.Type.NO)
@@ -80,11 +78,43 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
                         .show();
                 return;
             }
-            organizationDc.setItem(orgData.getOrganization());
-            organizationFragment.getFragment().setVisible(true);
-            organizationFragment.setAllElementsEditable(false);
+            setOrganizationFragmentProperties(true,false,orgData.getOrganization());
             newOrganization=false;
         }
+        else {
+            showMessage("Заполните поля ИНН и КПП!", Notifications.NotificationType.HUMANIZED);
+        }
+    }
+
+    @Subscribe("drop")
+    public void onDrop(Action.ActionPerformedEvent event) {
+        if(organizationDc.getItemOrNull()!=null) {
+            dialogs.createOptionDialog()
+                    .withMessage("Вы уверены, что хотите очистить информацию об организации?\nВсе введенные данные будут потеряны.")
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
+                                newOrganization=false;
+                                setOrganizationFragmentProperties(false,false,null);
+                                clearSearchFields();
+                            }),
+                            new DialogAction(DialogAction.Type.NO))
+                    .show();
+        }
+        else {
+            clearSearchFields();
+        }
+
+    }
+
+    private void clearSearchFields() {
+        innField.clear();
+        kppField.clear();
+    }
+
+    private void setOrganizationFragmentProperties(boolean visible,boolean editable, Organization item) {
+        organizationDc.setItem(item);
+        organizationFragment.getFragment().setVisible(visible);
+        organizationFragment.setAllElementsEditable(editable);
     }
 
     @Subscribe("back")
@@ -129,12 +159,15 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
         Organization org = organizationDc.getItem();
         Collection<RoleExt> roles = roleFragment.getRoles();
         org.setRole(OrganizationRole.ADMINISTRATIVE);
-        RegistrationService.RegistrationResult result =registrationService.registerUser(getEditedEntity(),org,roles);
+        UserExt user = getEditedEntity();
+        user.setLogin(user.getEmail());
+        RegistrationService.RegistrationResult result =registrationService.registerUser(user,org,roles);
         if(!result.isSuccess()) {
-            showMessage("User with these email and login already exists!", Notifications.NotificationType.TRAY);
-            return;
+            showMessage("Ошибка! Пожалуйста повторите регистрацию!", Notifications.NotificationType.ERROR);
         }
-        showMessage("User " + getEditedEntity().getLogin()+" has been created successfully",Notifications.NotificationType.TRAY);
+        else {
+            showMessage("Пользователь " + getEditedEntity().getLogin() + " успешно зарегистрирован!", Notifications.NotificationType.HUMANIZED);
+        }
         closeScreen();
     }
 
@@ -159,14 +192,23 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
     private boolean validateAllWithMessages() {
         switch(tabSheet.getSelectedTab().getName()) {
             case "0":
-                return userFragment.validateAllWithMessages();
+                if(!userFragment.validateAllWithMessages()) {
+                    return false;
+                }
+                else if(userFragment.validateAllWithMessages()&&registrationService.userExists(getEditedEntity())) {
+                    showMessage("Пользователь с таким email уже существует!", Notifications.NotificationType.HUMANIZED);
+                    return false;
+                }
+                else {
+                    return true;
+                }
             case "1":
                 if(organizationDc.getItemOrNull()==null) {
-                    showMessage("No organization is selected!", Notifications.NotificationType.TRAY);
+                    showMessage("Организация не выбрана!", Notifications.NotificationType.TRAY);
                     return false;
                 }
                 else if(newOrganization&&organizationService.getOrganizationsByInn(organizationDc.getItem().getInn(),organizationDc.getItem().getKpp())!=null) {
-                    showMessage("Organization with these inn and kpp already exists!", Notifications.NotificationType.TRAY);
+                    showMessage("Организация с такими ИНН и КПП уже существует!", Notifications.NotificationType.TRAY);
                     return false;
                 }
                 else {

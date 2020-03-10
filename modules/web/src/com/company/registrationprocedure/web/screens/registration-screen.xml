@@ -28,6 +28,7 @@
         <action id="register" caption="Регистрация"/>
         <action id="cancel" caption="Отмена"/>
         <action id="search" icon="icons/search.png"/>
+        <action id="drop" icon="icons/trash.png"/>
     </actions>
     <layout>
         <tabSheet id="tabSheet">
@@ -40,22 +41,28 @@
                 </buttonsPanel>
             </tab>
             <tab caption="Данные организации" margin="true,false,false,false" spacing="true" id="1" enable="false"
-                 expand="organizationFragment">
-                <label value="Поиск организации:"/>
-                <form>
-                    <column>
-                        <label value="ИНН*:"/>
-                        <label value="КПП*:"/>
-                        <button action="search" colspan="2" caption="Найти организацию"></button>
-                    </column>
-                    <column>
-                        <textField id="innField">
-                        </textField>
-                        <textField id="kppField">
-                        </textField>
-                    </column>
-                </form>
-                <fragment id="organizationFragment" screen="registrationprocedure_OrganizationFragment" visible="false" colspan="2"/>
+                 expand="vbox">
+                <vbox id="vbox" spacing="true">
+                        <groupBox spacing="true" collapsable="false" caption="Поиск организации">
+                            <form>
+                                <column>
+                                    <label value="ИНН*:"/>
+                                    <label value="КПП*:"/>
+                                    <button action="search" caption="Найти организацию"></button>
+                                    <button action="drop" caption="Сбросить организацию"></button>
+                                </column>
+                                <column>
+                                    <textField id="innField">
+                                    </textField>
+                                    <textField id="kppField">
+                                    </textField>
+                                </column>
+                            </form>
+                        </groupBox>
+                        <groupBox spacing="true" collapsable="false" caption="Информация о выбранной организации">
+                            <fragment id="organizationFragment" screen="registrationprocedure_OrganizationFragment" visible="false" colspan="2"/>
+                        </groupBox>
+                </vbox>
                 <buttonsPanel>
                     <button action="cancel"/>
                     <button action="back" stylename="friendly"/>

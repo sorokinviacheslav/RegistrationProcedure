@@ -15,7 +15,6 @@
                 <label value="Имя*:"/>
                 <label value="Отчество*:"/>
                 <label value="Электронная почта*:"/>
-                <label value="Логин*:"/>
                 <label value="Доменный логин*:"/>
                 <label value="Доменный пароль*:"/>
                 <label value="Пароль*:"/>
@@ -35,7 +34,6 @@
                         <email message="msg://emailWrongCaption"/>
                     </validators>
                 </textField>
-                <textField id="login" required="true" property="login" caption=""/>
                 <textField id="domainLogin" property="domainLogin" caption="" description="Не заполняйте, если вы не сотрудник администрации"/>
                 <textField id="domainPassword" caption=""/>
                 <passwordField id="passwordField" required="true" caption=""/>

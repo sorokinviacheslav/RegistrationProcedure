@@ -24,6 +24,7 @@
                 <label value="ФИО контактного лица*:"/>
                 <label value="Телефон*:"/>
                 <label value="Электронная почта*:"/>
+                <label value="Роль организации*:"/>
                 <label value="Подпись и печать организации*:" colspan="2"/>
             </column>
             <column>
