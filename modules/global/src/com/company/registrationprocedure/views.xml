@@ -51,6 +51,7 @@
         <property name="organization" view="_minimal">
             <property name="role"/>
             <property name="email"/>
+            <property name="shortName"/>
             <property name="inn"/>
             <property name="kpp"/>
         </property>

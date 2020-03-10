@@ -11,12 +11,18 @@
             <instance id="organizationDc" property="organization"/>
         </instance>
     </data>
-    <dialogMode height="600"
-                width="800"/>
-    <layout expand="fragment" spacing="true">
-        <fragment id="fragment" screen="registrationprocedure_UserExtFragment"/>
-        <lookupField id="orgLookup" dataContainer="userExtDc" property="organization" editable="false" enable="false"></lookupField>
-        <fragment id="fragment_1" screen="registrationprocedure_OrganizationFragment"/>
+    <dialogMode height="800"
+                width="1500"/>
+    <layout expand="form" spacing="true">
+        <hbox id="form" spacing="true">
+            <vbox spacing="true">
+                <fragment id="fragment" screen="registrationprocedure_UserExtFragment"/>
+            </vbox>
+            <vbox spacing="true">
+                <lookupField id="orgLookup" dataContainer="userExtDc" property="organization" editable="false" enable="false"></lookupField>
+                <fragment id="fragment_1" screen="registrationprocedure_OrganizationFragment"/>
+            </vbox>
+        </hbox>
         <buttonsPanel>
             <button id="editAccountButton" caption="Edit Profile"/>
             <button id="backButton" caption="Back"/>

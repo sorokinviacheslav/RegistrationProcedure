@@ -32,7 +32,7 @@ public class Organization extends StandardEntity {
     protected String shortName;
 
     @NotNull
-    @Column(name = "INN", nullable = false, unique = true, length = 20)
+    @Column(name = "INN", nullable = false, length = 20)
     protected String inn;
 
     @Column(name = "KPP")

@@ -9,9 +9,9 @@ import com.company.registrationprocedure.service.RegistrationService;
 import com.company.registrationprocedure.web.screens.organization.OrganizationFragment;
 import com.company.registrationprocedure.web.screens.roleext.RoleExtFragment;
 import com.company.registrationprocedure.web.screens.userext.UserExtFragment;
+import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
-import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
@@ -19,8 +19,6 @@ import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
-import java.util.Map;
-import java.util.function.BiFunction;
 
 @UiController("registrationprocedure_RegistrationScreen")
 @UiDescriptor("registration-screen.xml")
@@ -51,13 +49,13 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
     @Inject
     private OrganizationService organizationService;
     @Inject
-    private ScreenBuilders screenBuilders;
-    @Inject
-    private DataComponents dataComponents;
-    @Inject
     private InstancePropertyContainer<Organization> organizationDc;
     @Inject
     private Dialogs dialogs;
+    @Inject
+    private Metadata metadata;
+
+    private boolean newOrganization = false;
 
     @Subscribe("search")
     public void onSearch(Action.ActionPerformedEvent event) {
@@ -69,9 +67,13 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
                         .withMessage("Организация не найдена в базе данных, хотите добавить новую организацию?")
                         .withActions(
                                 new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
-                                    organizationDc.setItem(null);
+                                    Organization newOrg =metadata.create(Organization.class);
+                                    newOrg.setInn(innField.getValue());
+                                    newOrg.setKpp(kppField.getValue());
+                                    organizationDc.setItem(newOrg);
                                     organizationFragment.getFragment().setVisible(true);
                                     organizationFragment.setAllElementsEditable(true);
+                                    newOrganization=true;
                                 }),
                                 new DialogAction(DialogAction.Type.NO)
                         )
@@ -81,6 +83,7 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
             organizationDc.setItem(orgData.getOrganization());
             organizationFragment.getFragment().setVisible(true);
             organizationFragment.setAllElementsEditable(false);
+            newOrganization=false;
         }
     }
 
@@ -88,9 +91,7 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
     public void onBack(Action.ActionPerformedEvent event) {
         int currentTab = Integer.parseInt(tabSheet.getSelectedTab().getName());
         if(currentTab>0) {
-            tabSheet.setSelectedTab(String.valueOf(currentTab-1));
-            tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
-            tabSheet.getTab(String.valueOf(currentTab-1)).setEnabled(true);
+            switchToPrevTab(currentTab);
         }
     }
 
@@ -100,36 +101,24 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
         int maxTabs=tabSheet.getTabs().size();
         int currentTab = Integer.parseInt(tabSheet.getSelectedTab().getName());
         if(currentTab<(maxTabs-1)) {
-            tabSheet.setSelectedTab(String.valueOf(currentTab+1));
-            tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
-            tabSheet.getTab(String.valueOf(currentTab+1)).setEnabled(true);
+            switchToNextTab(currentTab);
         }
         if ("2".equals(tabSheet.getTab(String.valueOf(currentTab+1)).getName())) {
-            roleExtsDl.setQuery("select e from registrationprocedure_RoleExt e where e.organizationRole=:role");
-            roleExtsDl.setParameter("role",organizationFragment.getOrganization().getRole());
+            roleExtsDl.setParameter("role",organizationDc.getItem().getRole());
             roleExtsDl.load();
         }
     }
 
-    @Subscribe
-    public void onInit(InitEvent event) {
-        BiFunction<String, String, Boolean> predicate = String::contains;
-        /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
-                predicate.apply(itemCaption.toLowerCase(), searchString));*/
-        /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->{
-            for(Organization org: organizationsDc.getItems()) {
-                if(itemCaption.equals(org.getName())) {
-                    String orgData = "" + org.getName() + org.getInn();
-                    return predicate.apply(orgData.toLowerCase(), searchString);
-                }
-            }
-            return false;
-        } );*/
+    private void switchToNextTab(int currentTab) {
+        tabSheet.setSelectedTab(String.valueOf(currentTab+1));
+        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
+        tabSheet.getTab(String.valueOf(currentTab+1)).setEnabled(true);
     }
 
-    @Subscribe
-    public void onBeforeShow(BeforeShowEvent event) {
-
+    private void switchToPrevTab(int currentTab) {
+        tabSheet.setSelectedTab(String.valueOf(currentTab-1));
+        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
+        tabSheet.getTab(String.valueOf(currentTab-1)).setEnabled(true);
     }
 
     @Subscribe("register")
@@ -137,39 +126,34 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
         if(!userFragment.validateAllWithMessages()) return;
         if(!organizationFragment.validateAllWithMessages()) return;
         if(!roleFragment.validateAllWithMessages()) return;
-        Organization org = organizationFragment.getOrganization();
+        Organization org = organizationDc.getItem();
         Collection<RoleExt> roles = roleFragment.getRoles();
         org.setRole(OrganizationRole.ADMINISTRATIVE);
         RegistrationService.RegistrationResult result =registrationService.registerUser(getEditedEntity(),org,roles);
         if(!result.isSuccess()) {
-            notifications.create(Notifications.NotificationType.TRAY)
-                    .withCaption(
-                            "User with these email and login already exists!")
-                    .show();
+            showMessage("User with these email and login already exists!", Notifications.NotificationType.TRAY);
             return;
         }
-        notifications.create(Notifications.NotificationType.TRAY)
-                .withCaption("Created user " + getLogin())
-                .show();
+        showMessage("User " + getEditedEntity().getLogin()+" has been created successfully",Notifications.NotificationType.TRAY);
         closeScreen();
     }
 
     @Subscribe("cancel")
     public void onCancel(Action.ActionPerformedEvent event) {
-        closeScreen();
+        dialogs.createOptionDialog()
+                .withMessage("Вы уверены что хотите прервать регистрацию?\nВсе введенные данные будут утеряны.")
+                .withActions(
+                        new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
+                            closeScreen();
+                        }),
+                        new DialogAction(DialogAction.Type.NO)
+                )
+                .show();
     }
 
     private void closeScreen() {
         close(WINDOW_DISCARD_AND_CLOSE_ACTION);
         screens.create(ExtLoginScreen.class, OpenMode.ROOT).show();
-    }
-    
-    public String getPassword() {
-        return getEditedEntity().getPassword();
-    }
-
-    public String getLogin() {
-        return getEditedEntity().getLogin();
     }
 
     private boolean validateAllWithMessages() {
@@ -177,11 +161,28 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
             case "0":
                 return userFragment.validateAllWithMessages();
             case "1":
-                return organizationFragment.validateAllWithMessages();
+                if(organizationDc.getItemOrNull()==null) {
+                    showMessage("No organization is selected!", Notifications.NotificationType.TRAY);
+                    return false;
+                }
+                else if(newOrganization&&organizationService.getOrganizationsByInn(organizationDc.getItem().getInn(),organizationDc.getItem().getKpp())!=null) {
+                    showMessage("Organization with these inn and kpp already exists!", Notifications.NotificationType.TRAY);
+                    return false;
+                }
+                else {
+                    return organizationFragment.validateAllWithMessages();
+                }
             case "2":
                 return roleFragment.validateAllWithMessages();
             default:
                 return true;
         }
+    }
+
+    private void showMessage(String text, Notifications.NotificationType type) {
+        notifications.create(type)
+                .withCaption(
+                        text)
+                .show();
     }
 }

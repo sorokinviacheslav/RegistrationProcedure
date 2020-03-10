@@ -11,10 +11,10 @@
     <layout>
         <form dataContainer="organizationDc">
             <column>
-                <label value="ИНН*:"/>
+                <label id="innLabel" value="ИНН*:"/>
                 <label value="Краткое наименование*:"/>
                 <label value="Полное наименование*:"/>
-                <label value="КПП*:"/>
+                <label id="kppLabel" value="КПП*:"/>
                 <label value="ОГРН*:"/>
                 <label value="ОКВЭД*:"/>
                 <label value="Тип организации*:"/>

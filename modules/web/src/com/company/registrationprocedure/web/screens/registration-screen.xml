@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd">
     <data>
         <instance id="userExtDc" class="com.company.registrationprocedure.entity.UserExt" view="userExt-view_7">
             <loader id="userExtDl"/>
@@ -10,6 +11,13 @@
             <loader id="roleExtsDl">
                 <query>
                     <![CDATA[select e from registrationprocedure_RoleExt e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.organizationRole=:role</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
                 </query>
             </loader>
         </collection>
@@ -23,7 +31,7 @@
     </actions>
     <layout>
         <tabSheet id="tabSheet">
-            <tab caption="User Information" margin="true,false,false,false" spacing="true" id="0" expand="userFragment">
+            <tab caption="Данные пользователя" margin="true,false,false,false" spacing="true" id="0" expand="userFragment">
                 <fragment id="userFragment" screen="registrationprocedure_UserExtFragment">
                 </fragment>
                 <buttonsPanel>
@@ -31,14 +39,14 @@
                     <button action="next" stylename="friendly"/>
                 </buttonsPanel>
             </tab>
-            <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1" enable="false"
+            <tab caption="Данные организации" margin="true,false,false,false" spacing="true" id="1" enable="false"
                  expand="organizationFragment">
                 <label value="Поиск организации:"/>
                 <form>
                     <column>
                         <label value="ИНН*:"/>
                         <label value="КПП*:"/>
-                        <button action="search" colspan="2"></button>
+                        <button action="search" colspan="2" caption="Найти организацию"></button>
                     </column>
                     <column>
                         <textField id="innField">
@@ -54,7 +62,7 @@
                     <button action="next" stylename="friendly"/>
                 </buttonsPanel>
             </tab>
-            <tab caption="System Roles" margin="true,false,false,false" spacing="true" enable="false" id="2">
+            <tab caption="Выбор ролей" margin="true,false,false,false" spacing="true" enable="false" id="2">
                 <fragment id="roleFragment" screen="registrationprocedure_RoleExtFragment"/>
                 <buttonsPanel>
                     <button action="back" stylename="friendly"/>
