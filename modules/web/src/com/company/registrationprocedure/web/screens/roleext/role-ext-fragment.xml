@@ -10,8 +10,7 @@
         </collection>
     </data>
     <layout>
-        <twinColumn id="twinColumn" caption="Select Roles"
-                    captionProperty="userRole" rows="0" editable="true"
+        <twinColumn id="twinColumn" caption="Select Roles" rows="0" editable="true"
                     optionsContainer="roleExtsDc"/>
     </layout>
 </fragment>

@@ -6,14 +6,6 @@
             <loader id="userExtDl"/>
             <instance id="organizationDc" property="organization"/>
         </instance>
-        <collection id="organizationsDc" class="com.company.registrationprocedure.entity.Organization"
-                    view="organization-view">
-            <loader id="organizationsDl" dynamicAttributes="true">
-                <query>
-                    <![CDATA[select e from registrationprocedure_Organization e]]>
-                </query>
-            </loader>
-        </collection>
         <collection id="roleExtsDc" class="com.company.registrationprocedure.entity.RoleExt" view="roleExt-view">
             <loader id="roleExtsDl">
                 <query>
@@ -26,7 +18,8 @@
         <action id="next" caption="Далее"/>
         <action id="back" caption="Назад"/>
         <action id="register" caption="Регистрация"/>
-        <action id="cancel" caption="Закрыть"/>
+        <action id="cancel" caption="Отмена"/>
+        <action id="search" icon="icons/search.png"/>
     </actions>
     <layout>
         <tabSheet id="tabSheet">
@@ -35,31 +28,38 @@
                 </fragment>
                 <buttonsPanel>
                     <button action="cancel"/>
-                    <button action="next"/>
+                    <button action="next" stylename="friendly"/>
                 </buttonsPanel>
             </tab>
             <tab caption="Organization Information" margin="true,false,false,false" spacing="true" id="1" enable="false"
                  expand="organizationFragment">
-                <lookupPickerField id="organizationLookupPickerField" optionsContainer="organizationsDc"
-                                   filterMode="NO" caption="Organization" captionProperty="name" dataContainer="userExtDc" property="organization">
-                    <actions>
-                        <action id="lookup" type="picker_lookup"/>
-                        <action id="open" type="picker_open"/>
-                    </actions>
-                </lookupPickerField>
-                <fragment id="organizationFragment" screen="registrationprocedure_OrganizationFragment"/>
+                <label value="Поиск организации:"/>
+                <form>
+                    <column>
+                        <label value="ИНН*:"/>
+                        <label value="КПП*:"/>
+                        <button action="search" colspan="2"></button>
+                    </column>
+                    <column>
+                        <textField id="innField">
+                        </textField>
+                        <textField id="kppField">
+                        </textField>
+                    </column>
+                </form>
+                <fragment id="organizationFragment" screen="registrationprocedure_OrganizationFragment" visible="false" colspan="2"/>
                 <buttonsPanel>
                     <button action="cancel"/>
-                    <button action="back"/>
-                    <button action="next"/>
+                    <button action="back" stylename="friendly"/>
+                    <button action="next" stylename="friendly"/>
                 </buttonsPanel>
             </tab>
             <tab caption="System Roles" margin="true,false,false,false" spacing="true" enable="false" id="2">
                 <fragment id="roleFragment" screen="registrationprocedure_RoleExtFragment"/>
                 <buttonsPanel>
-                    <button action="back"/>
+                    <button action="back" stylename="friendly"/>
                     <button action="cancel"/>
-                    <button action="register"/>
+                    <button action="register" stylename="friendly"/>
                 </buttonsPanel>
             </tab>
         </tabSheet>

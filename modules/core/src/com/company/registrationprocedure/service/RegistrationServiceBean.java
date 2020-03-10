@@ -56,18 +56,20 @@ public class RegistrationServiceBean implements RegistrationService {
         user.setGroup(group);
         user.setStatus(UserStatus.NEW);
         em.persist(user);
-        for(RoleExt role:roles) {
-            UserRole uRole = metadata.create(UserRole.class);
-            uRole.setRole(role);
-            uRole.setUser(user);
-            em.persist(uRole);
+        if(roles!=null) {
+            for (RoleExt role : roles) {
+                UserRole uRole = metadata.create(UserRole.class);
+                uRole.setRole(role);
+                uRole.setUser(user);
+                em.persist(uRole);
+            }
         }
-        /*EmailInfo emailInfo = new EmailInfo(
+        EmailInfo emailInfo = new EmailInfo(
                 user.getEmail(), // recipients
                 "Activate your account",
                 "http://localhost:8080/app/#activate?value=" + user.getId()
         );
-        emailService.sendEmailAsync(emailInfo);*/
+        emailService.sendEmailAsync(emailInfo);
         return new RegistrationResult(user);
     }
 

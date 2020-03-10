@@ -4,17 +4,22 @@ import com.company.registrationprocedure.entity.Organization;
 import com.company.registrationprocedure.entity.OrganizationRole;
 import com.company.registrationprocedure.entity.RoleExt;
 import com.company.registrationprocedure.entity.UserExt;
+import com.company.registrationprocedure.service.OrganizationService;
 import com.company.registrationprocedure.service.RegistrationService;
 import com.company.registrationprocedure.web.screens.organization.OrganizationFragment;
 import com.company.registrationprocedure.web.screens.roleext.RoleExtFragment;
 import com.company.registrationprocedure.web.screens.userext.UserExtFragment;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
+import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.*;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 @UiController("registrationprocedure_RegistrationScreen")
@@ -28,7 +33,9 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
     @Inject
     private Notifications notifications;
     @Inject
-    private LookupPickerField<Organization> organizationLookupPickerField;
+    private TextField<String> kppField;
+    @Inject
+    private TextField<String> innField;
     @Inject
     private UserExtFragment userFragment;
     @Inject
@@ -36,16 +43,45 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
     @Inject
     private RoleExtFragment roleFragment;
     @Inject
-    private CollectionContainer<Organization> organizationsDc;
-    @Inject
     private TabSheet tabSheet;
     @Inject
     private CollectionLoader<RoleExt> roleExtsDl;
+    @Inject
+    private Screens screens;
+    @Inject
+    private OrganizationService organizationService;
+    @Inject
+    private ScreenBuilders screenBuilders;
+    @Inject
+    private DataComponents dataComponents;
+    @Inject
+    private InstancePropertyContainer<Organization> organizationDc;
+    @Inject
+    private Dialogs dialogs;
 
-
-    @Subscribe("organizationLookupPickerField")
-    public void onOrganizationLookupPickerFieldValueChange(HasValue.ValueChangeEvent<Organization> event) {
-        organizationFragment.setAllElementsEditable(event.getValue()==null);
+    @Subscribe("search")
+    public void onSearch(Action.ActionPerformedEvent event) {
+        if(innField.getValue()!=null&&kppField.getValue()!=null) {
+            OrganizationService.OrganizationData orgData = organizationService.getOrganizationsByInn(innField.getValue(),kppField.getValue());
+            if(orgData==null) {
+                dialogs.createOptionDialog()
+                        .withCaption("Поиск организации")
+                        .withMessage("Организация не найдена в базе данных, хотите добавить новую организацию?")
+                        .withActions(
+                                new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
+                                    organizationDc.setItem(null);
+                                    organizationFragment.getFragment().setVisible(true);
+                                    organizationFragment.setAllElementsEditable(true);
+                                }),
+                                new DialogAction(DialogAction.Type.NO)
+                        )
+                        .show();
+                return;
+            }
+            organizationDc.setItem(orgData.getOrganization());
+            organizationFragment.getFragment().setVisible(true);
+            organizationFragment.setAllElementsEditable(false);
+        }
     }
 
     @Subscribe("back")
@@ -80,7 +116,7 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
         BiFunction<String, String, Boolean> predicate = String::contains;
         /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->
                 predicate.apply(itemCaption.toLowerCase(), searchString));*/
-        organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->{
+        /*organizationLookupPickerField.setFilterPredicate((itemCaption, searchString) ->{
             for(Organization org: organizationsDc.getItems()) {
                 if(itemCaption.equals(org.getName())) {
                     String orgData = "" + org.getName() + org.getInn();
@@ -88,7 +124,7 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
                 }
             }
             return false;
-        } );
+        } );*/
     }
 
     @Subscribe
@@ -115,12 +151,17 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
         notifications.create(Notifications.NotificationType.TRAY)
                 .withCaption("Created user " + getLogin())
                 .show();
-        close(WINDOW_DISCARD_AND_CLOSE_ACTION);
+        closeScreen();
     }
 
     @Subscribe("cancel")
     public void onCancel(Action.ActionPerformedEvent event) {
+        closeScreen();
+    }
+
+    private void closeScreen() {
         close(WINDOW_DISCARD_AND_CLOSE_ACTION);
+        screens.create(ExtLoginScreen.class, OpenMode.ROOT).show();
     }
     
     public String getPassword() {

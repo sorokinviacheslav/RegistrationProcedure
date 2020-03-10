@@ -36,7 +36,7 @@
                     </validators>
                 </textField>
                 <textField id="login" required="true" property="login" caption=""/>
-                <textField id="domainLogin" property="domainLogin" caption=""/>
+                <textField id="domainLogin" property="domainLogin" caption="" description="Не заполняйте, если вы не сотрудник администрации"/>
                 <textField id="domainPassword" caption=""/>
                 <passwordField id="passwordField" required="true" caption=""/>
                 <passwordField id="passwordConfirmField" required="true" caption=""/>
@@ -44,8 +44,8 @@
                              required="true" property="phoneNumber" caption=""/>
                 <textField id="address" caption=""/>
                 <textField id="position" caption=""/>
-                <checkBox id="emailNotificationsCheckBox" property="recieveEmailNotifications" caption=""/>
-                <checkBox id="hideEmail" property="hideEmail" caption=""/>
+                <checkBox id="emailNotificationsCheckBox" property="recieveEmailNotifications" caption="" description="Поставьте «галочку», если хотите отказаться от получения уведомлений по электронной почте"/>
+                <checkBox id="hideEmail" property="hideEmail" caption="" description="Поставьте «галочку», если хотите скрыть адрес своей электронной почты в интерфейсе системы"/>
             </column>
         </form>
     </layout>

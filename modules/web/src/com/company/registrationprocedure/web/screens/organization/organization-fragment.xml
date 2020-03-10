@@ -11,16 +11,42 @@
     <layout>
         <form dataContainer="organizationDc">
             <column>
-                <textField id="innField" required="true" property="inn"></textField>
-                <textField id="kppField" required="true" property="kpp"></textField>
-                <textField id="nameField" required="true" property="name"></textField>
+                <label value="ИНН*:"/>
+                <label value="Краткое наименование*:"/>
+                <label value="Полное наименование*:"/>
+                <label value="КПП*:"/>
+                <label value="ОГРН*:"/>
+                <label value="ОКВЭД*:"/>
+                <label value="Тип организации*:"/>
+                <label value="Вид предприятия*:"/>
+                <label value="Юридический адрес*:"/>
+                <label value="Фактический адрес*:"/>
+                <label value="ФИО контактного лица*:"/>
+                <label value="Телефон*:"/>
+                <label value="Электронная почта*:"/>
+                <label value="Подпись и печать организации*:" colspan="2"/>
+            </column>
+            <column>
+                <textField id="innField" required="true" property="inn" caption=""></textField>
+                <textField id="shortNameField" required="true" property="shortName" caption=""></textField>
+                <textField id="nameField" required="true" property="name" caption=""></textField>
+                <textField id="kppField" required="true" property="kpp" caption=""></textField>
+                <textField id="ogrnField"></textField>
+                <textField id="okvedField"></textField>
+                <lookupField id="orgTypeField"></lookupField>
+                <lookupField id="orgKindField"></lookupField>
+                <textField id="companyAddressField"></textField>
+                <textField id="realAddressField"></textField>
+                <textField id="contactPersonField"></textField>
+                <maskedField id="phoneField" valueMode="masked" mask="+7(###)###-##-##" caption=""/>
                 <textField id="emailField" required="true"
-                           textChangeTimeout="400" caption="Email" property="email">
+                           textChangeTimeout="400" caption="" property="email">
                     <validators>
                         <email message="msg://emailWrongCaption"/>
                     </validators>
                 </textField>
-                <lookupField id="roleField" required="true" property="role" optionsEnum="com.company.registrationprocedure.entity.OrganizationRole"></lookupField>
+                <lookupField id="roleField" required="true" property="role" optionsEnum="com.company.registrationprocedure.entity.OrganizationRole" caption=""></lookupField>
+                <multiUpload id="signatureAndSealUpload" colspan="2"/>
             </column>
         </form>
     </layout>
