@@ -106,17 +106,6 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
 
     }
 
-    private void clearSearchFields() {
-        innField.clear();
-        kppField.clear();
-    }
-
-    private void setOrganizationFragmentProperties(boolean visible,boolean editable, Organization item) {
-        organizationDc.setItem(item);
-        organizationFragment.getFragment().setVisible(visible);
-        organizationFragment.setAllElementsEditable(editable);
-    }
-
     @Subscribe("back")
     public void onBack(Action.ActionPerformedEvent event) {
         int currentTab = Integer.parseInt(tabSheet.getSelectedTab().getName());
@@ -137,18 +126,6 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
             roleExtsDl.setParameter("role",organizationDc.getItem().getRole());
             roleExtsDl.load();
         }
-    }
-
-    private void switchToNextTab(int currentTab) {
-        tabSheet.setSelectedTab(String.valueOf(currentTab+1));
-        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
-        tabSheet.getTab(String.valueOf(currentTab+1)).setEnabled(true);
-    }
-
-    private void switchToPrevTab(int currentTab) {
-        tabSheet.setSelectedTab(String.valueOf(currentTab-1));
-        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
-        tabSheet.getTab(String.valueOf(currentTab-1)).setEnabled(true);
     }
 
     @Subscribe("register")
@@ -226,5 +203,28 @@ public class RegistrationScreen extends StandardEditor<UserExt> {
                 .withCaption(
                         text)
                 .show();
+    }
+
+    private void switchToNextTab(int currentTab) {
+        tabSheet.setSelectedTab(String.valueOf(currentTab+1));
+        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
+        tabSheet.getTab(String.valueOf(currentTab+1)).setEnabled(true);
+    }
+
+    private void switchToPrevTab(int currentTab) {
+        tabSheet.setSelectedTab(String.valueOf(currentTab-1));
+        tabSheet.getTab(String.valueOf(currentTab)).setEnabled(false);
+        tabSheet.getTab(String.valueOf(currentTab-1)).setEnabled(true);
+    }
+
+    private void clearSearchFields() {
+        innField.clear();
+        kppField.clear();
+    }
+
+    private void setOrganizationFragmentProperties(boolean visible,boolean editable, Organization item) {
+        organizationDc.setItem(item);
+        organizationFragment.getFragment().setVisible(visible);
+        organizationFragment.setAllElementsEditable(editable);
     }
 }
