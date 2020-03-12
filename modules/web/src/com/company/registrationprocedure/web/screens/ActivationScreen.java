@@ -33,9 +33,6 @@ public class ActivationScreen extends Screen {
 
     @Subscribe
     protected void onUrlParamsChanged(UrlParamsChangedEvent event) {
-        //TO DO
-        //check if already logged in
-        //probably move data manipulation to bean
         UUID userId = UUID.fromString(event.getParams().get("value"));
         userExtDl.setEntityId(userId);
         userExtDl.load();
